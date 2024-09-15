@@ -46,41 +46,39 @@
                         <VueIcon type="mdi" :path="mdiAccountOutline " class="self-center cursor-pointer" size="30"/>
                     </a>
                     <div @click="openLogin" class="hidden lg:flex flex-col cursor-pointer">
-                        <p class="text-sm text-gray-500">{{ $t('login.title') }} / Đăng ký</p>
-                        <p class="flex text-sm font-medium">Tài khoản của tôi <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
+                        <p class="text-sm text-gray-500">{{ $t('login.buttons.submit') }} / {{ $t('register.buttons.submit') }}</p>
+                        <p class="flex text-sm font-medium">{{ $t('acount.header') }} <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
                     </div>
                     <div id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-screen -right-[120px] md:w-[24rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <div class="overflow-hidden">
                             <div class="flex w-[100%] transform transition-transform duration-500 ease-out" :style="{ transform: recoverPanel ? 'translateX(-100%)' : 'translateX(0)' }">
                                 <div id="login-panel" class="min-w-full md:min-w-[24rem] flex flex-col gap-2 p-2">
-                                    <h1 class="text-xl uppercase">Đăng nhập tài khoản</h1>
-                                    <p class="text-gray-400">Nhập email và mật khẩu của bạn:</p>
-                                    <input type="email" placeholder="Nhập email hoặc số điện thoại" class="outline-none border p-2">
-                                    <input type="password" placeholder="Mật khẩu" class="outline-none border p-2">
-                                    <span class="text-gray-400">Website được bảo vệ bởi reCAPTCHA và <a href="https://policies.google.com/privacy" class="text-blue-500">Chính sách bảo mật</a> và <a href="https://policies.google.com/terms" class="text-blue-500">Điều khoản dịch vụ</a> của Google.</span>
-                                    <button class="bg-black text-white font-bold py-2">Đăng nhập</button>
-                                    <p class="text-gray-400">Khách hàng mới? <a href="" class="text-blue-500">Tạo tài khoản</a></p>
-                                    <p class="text-gray-400">Quên mật khẩu? <span @click="openRecoverPanel" class="text-blue-500 cursor-pointer">Khôi phục mật khẩu</span></p>
+                                    <h1 class="text-xl uppercase">{{ $t('login.header') }}</h1>
+                                    <p class="text-gray-400">{{ $t('login.description') }}</p>
+                                    <input type="email" :placeholder="$t('login.inputs.email_placeholder')" class="outline-none border p-2">
+                                    <input type="password" :placeholder="$t('login.inputs.password_placeholder')" class="outline-none border p-2">
+                                    <button class="bg-black text-white font-bold py-2">{{ $t('login.buttons.submit') }}</button>
+                                    <p class="text-gray-400">{{ $t('login.account_actions.new_user_prompt') }} <a href="" class="text-blue-500">{{ $t('login.account_actions.new_user_prompt') }}</a></p>
+                                    <p class="text-gray-400">{{ $t('login.forgot_password.prompt') }} <span @click="openRecoverPanel" class="text-blue-500 cursor-pointer">{{ $t('login.forgot_password.reset_action') }}</span></p>
                                 </div>
                                 <div id="recover-panel" class="min-w-full md:min-w-[24rem] flex flex-col gap-2 p-2">
-                                    <h1 class="text-xl uppercase">Khôi phục mật khẩu</h1>
+                                    <h1 class="text-xl uppercase">{{ $t('recover.headerr') }}</h1>
                                     <div class="flex gap-2">
                                         <input type="radio" id="emailCheck" @change="changeRecoverLogin" :checked="recoverLogin==='email'&& 'email'" value="email" name="recoverLogin" class="">
-                                        <label for="emailCheck">Khôi phục bằng email</label>
+                                        <label for="emailCheck">{{ $t('recover.email_option') }}</label>
                                     </div>
                                     <div class="flex gap-2">
                                         <input type="radio" id="phoneCheck" @change="changeRecoverLogin" :checked="recoverLogin==='phone'&& 'phone'" value="phone" name="recoverLogin" class="">
-                                        <label for="phoneCheck">Khôi phục bằng số điện thoại</label>
+                                        <label for="phoneCheck">{{ $t('recover.phone_option') }}</label>
                                     </div>
                                     <div v-if="recoverLogin==='email'" class="flex flex-col gap-2">
-                                        <input type="email" placeholder="Email" class="outline-none border p-2">
-                                        <span class="text-gray-400">Website được bảo vệ bởi reCAPTCHA và <a href="https://policies.google.com/privacy" class="text-blue-500">Chính sách bảo mật</a> và <a href="https://policies.google.com/terms" class="text-blue-500">Điều khoản dịch vụ</a> của Google.</span>
-                                        <button class="bg-black text-white font-bold py-2">Khôi phục</button>
-                                        <p class="text-gray-400">Bạn đã nhớ mật khẩu? <span @click="openRecoverPanel" class="text-blue-500 cursor-pointer">Trở về đăng nhập</span></p>
+                                        <input type="email" :placeholder="$t('recover.inputs.email_placeholder')" class="outline-none border p-2">
+                                        <button class="bg-black text-white font-bold py-2">{{ $t('recover.buttons.recover') }}</button>
+                                        <p class="text-gray-400">{{ $t('recover.return_to_login') }} <span @click="openRecoverPanel" class="text-blue-500 cursor-pointer">{{ $t('recover.back_to_login') }}</span></p>
                                     </div>
                                     <div v-if="recoverLogin==='phone'" class="flex flex-col gap-2">
-                                        <input type="phone" placeholder="Nhập số điện thoại" class="outline-none border p-2">
-                                        <button class="bg-black text-white font-bold py-2">Gửi mã xác nhận</button>
+                                        <input type="phone" :placeholder="$t('recover.inputs.phone_placeholder')" class="outline-none border p-2">
+                                        <button class="bg-black text-white font-bold py-2">{{ $t('recover.buttons.send_code') }}</button>
                                     </div>
                                 </div>
                             </div>
@@ -92,9 +90,9 @@
                         <a href="javascript:void(0)"><VueIcon type="mdi" :path="mdiShoppingOutline " size="30"/></a>
                         <span class="absolute top-0 right-0 flex justify-center items-center w-4 h-4 rounded-full bg-orange-600 text-white">0</span>
                     </div>
-                    <p @click="openCart" class="hidden lg:flex cursor-pointer">Giỏ hàng</p>
+                    <p @click="openCart" class="hidden lg:flex cursor-pointer">{{ $t('cart.header') }}</p>
                     <div id="cart" :class="cart ?'flex':'hidden'" class="absolute flex-col  top-14 p-2 text-sm w-screen -right-[70px] md:w-[24rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
-                        <p class="uppercase font-bold text-gray-500 py-2 border-b w-full">Giỏ hàng</p>
+                        <p class="uppercase font-bold text-gray-500 py-2 border-b w-full">{{ $t('cart.header') }}</p>
                         <div>
                             <div class="hidden flex-col">
                                 <div class="flex py-2 border-b">
@@ -111,17 +109,17 @@
                             </div>
                             <div class="flex flex-col items-center py-2 border-b">
                                 <VueIcon type="mdi" :path="mdiShoppingOutline" size="50" class="self-center"/>
-                                <p>Hiện chưa có sản phẩm</p>
+                                <p>{{ $t('cart.description') }}</p>
                             </div>
                         </div>
                         <div class="py-2 flex flex-col gap-2">
                             <div class="flex justify-between">
-                                <p class="uppercase">TỔNG TIỀN:</p>
+                                <p class="uppercase">{{ $t('cart.total_Amount') }}:</p>
                                 <p class="text-red-500 font-bold">0 <u>đ</u></p>
                             </div>
                             <div class="flex gap-2 justify-between text-white text-sm uppercase">
-                                <a href="" class="w-1/2 bg-gray-600 py-2">Xem giỏ hàng</a>
-                                <a href="" class="w-1/2 bg-blue-800 py-2">Thanh toán</a>
+                                <a href="" class="w-1/2 bg-gray-600 py-2">{{ $t('cart.buttons.show_cart') }}</a>
+                                <a href="" class="w-1/2 bg-blue-800 py-2">{{ $t('cart.buttons.payment') }}</a>
                             </div>
                         </div>
 
