@@ -4,7 +4,7 @@
         <div class="h-16 flex justify-between px-5 md:px-0 md:justify-around items-center gap-2">
             <div @click="openMenu" class="flex md:hidden relative items-center cursor-pointer">
                 <VueIcon type="mdi" :path="!menu ? mdiViewHeadline : mdiClose  " size="40"/>
-                <ul id="menu" :class="menu ? 'flex':'hidden'" class="absolute flex-col font-bold bg-white w-screen z-10 top-14 -left-5 shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
+                <ul id="menu" :class="menu ? 'flex':'hidden'" class="absolute flex-col font-bold bg-white w-[calc(100vw-17px)] z-10 top-14 -left-5 shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                     <li @click.stop="openMenuChild" class="flex flex-col border-b">
                         <a href="javascript:void(0)" class="flex p-2 hover:bg-gray-200">BST Bắc Âu
                             <VueIcon type="mdi" :path="!menuChild ? mdiChevronDown : mdiChevronUp" size="20"/>
@@ -46,7 +46,7 @@
                         <VueIcon type="mdi" :path="mdiAccountOutline " class="self-center cursor-pointer" size="30"/>
                     </a>
                     <div @click="openLogin" class="hidden lg:flex flex-col cursor-pointer">
-                        <p class="text-sm text-gray-500">Đăng nhập / Đăng ký</p>
+                        <p class="text-sm text-gray-500">{{ $t('login.title') }} / Đăng ký</p>
                         <p class="flex text-sm font-medium">Tài khoản của tôi <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
                     </div>
                     <div id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-screen -right-[120px] md:w-[24rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
