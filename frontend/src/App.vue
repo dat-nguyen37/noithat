@@ -2,8 +2,8 @@
   <div id="app" class="flex flex-col min-h-screen">
     <NavBar/>
     <router-view/>
-    <div @click="openSetting" class="fixed z-50 right-5 bottom-10 w-10 h-10 rounded-full bg-yellow-500 flex justify-center items-center cursor-pointer">
-      <VueIcon type="mdi" :path="mdiCog " class="animate-spin"/>
+    <div @click="openSetting" class="fixed right-5 bottom-10 flex justify-center items-center cursor-pointer">
+      <VueIcon type="mdi" :path="mdiCog " class="animate-spin z-50  w-10 h-10 rounded-full bg-yellow-500"/>
       <div @click="scrollToTop()" :class="isSetting ? 'translate-y-0 opacity-100 duration-700' : 'translate-y-10 opacity-0 duration-100'" class="absolute transition-all -top-12 z-40">
         <VueIcon type="mdi" :path="mdiArrowUpBold" size="25" class="text-blue-500 w-8 h-8 rounded-full hover:bg-gray-700 flex justify-center items-center"/>
       </div>
