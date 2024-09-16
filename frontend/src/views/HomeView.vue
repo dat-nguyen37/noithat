@@ -20,13 +20,27 @@
                 <img src="/assets/image/thietke.jpg" alt="w-full h-full object-cover">
             </div>
         </div>
+        <div class="flex flex-col p-5">
+            <!-- new -->
+            <div class="flex flex-col gap-2">
+                <h1 class="text-3xl font-medium">Mới nhất</h1>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import {mdiChevronRight,mdiChevronLeft} from '@mdi/js'
+import ProductItem from '@/components/productItem/ProductItem.vue';
 export default {
     name:"HomeView",
+    components:{ProductItem},
     data(){
         return{
             currentIndex:0,
