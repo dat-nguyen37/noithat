@@ -20,7 +20,7 @@
                 <img src="/assets/image/thietke.jpg" alt="w-full h-full object-cover">
             </div>
         </div>
-        <div class="flex flex-col p-5">
+        <div class="flex flex-col p-5 md:p-10 gap-5">
             <!-- new -->
             <div class="flex flex-col gap-2">
                 <h1 class="text-3xl font-medium">Mới nhất</h1>
@@ -31,12 +31,94 @@
                     <ProductItem/>
                 </div>
             </div>
+            <!-- Sale -->
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-3xl font-medium">Ưu đãi</h1>
+                    <a href="" class="text-red-500">Xem thêm</a>
+                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                </div>
+                
+            </div>
+            <!-- sell well -->
+            <div class="flex flex-col gap-2">
+                <div class="flex justify-between items-center">
+                    <h1 class="text-3xl font-medium">Bán chạy</h1>
+                    <a href="" class="text-red-500">Xem thêm</a>
+                </div>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                    <ProductItem/>
+                </div>     
+            </div>
+            <!-- blog -->
+            <div class="flex flex-col gap-2">
+                <h1 class="text-3xl font-medium">Đánh giá thực tế</h1>
+                <div class="flex w-full overflow-hidden relative">
+                    <div id="blog" class="flex w-[calc(100vw-40px)] gap-5 md:gap-10 transition-transform duration-[3000ms] translate-x-0" :style="{ transform: `translateX(-${indexBlog * (windowWidth >= 768 ? 25 : 50)}%)` }">
+                        <div v-for="(item, index) in [1, 2, 3, 4, 5, 6,7,8]" :key="index" class="w-[calc(50%-20px)] md:w-[calc(25%-43px)] flex-shrink-0">
+                            <div class="h-60 w-full">
+                                <a href=""><img src="/assets/image/New/new1.webp" alt="" class="w-full h-full object-fill"></a>
+                            </div>
+                            <div class="flex flex-col gap-3 p-3">
+                                <div class="flex flex-col items-center">
+                                    <p>Dat Nguyen</p>
+                                    <div class="flex">
+                                        <VueIcon type="mdi" :path="mdiStar" size="15"/>
+                                        <VueIcon type="mdi" :path="mdiStar" size="15"/>
+                                        <VueIcon type="mdi" :path="mdiStar" size="15"/>
+                                        <VueIcon type="mdi" :path="mdiStar" size="15"/>
+                                        <VueIcon type="mdi" :path="mdiStar" size="15"/>
+                                    </div>
+                                </div>
+                                <p class="line-clamp-3 text-sm h-15">Tốt bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb dssds</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div @click="nextBlog" class="absolute -right-10 self-center"><VueIcon type="mdi" :path="mdiChevronRight" size="50"/></div>
+                </div>
+
+            </div>
+            <!-- banner -->
+             <div class="grid grid-cols-2 md:grid-cols-4">
+                <div class="flex flex-col items-center border p-5 text-gray-500">
+                    <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
+                    <p class="text-xl">Giao Hàng & Lắp Đặt</p>
+                    <p class="text-sm">Miễn Phí</p>
+                </div>
+                <div class="flex flex-col items-center border p-5 text-gray-500">
+                    <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
+                    <p class="text-xl">Đổi Trả 1 - 1</p>
+                    <p class="text-sm">Miễn Phí</p>
+                </div>
+                <div class="flex flex-col items-center border p-5 text-gray-500">
+                    <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
+                    <p class="text-xl">Bảo Hành 2 Năm</p>
+                    <p class="text-sm">Miễn Phí</p>
+                </div>
+                <div class="flex flex-col items-center border p-5 text-gray-500">
+                    <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
+                    <p class="text-xl">Tư Vấn Thiết Kế</p>
+                    <p class="text-sm">Miễn Phí</p>
+                </div>
+             </div>
         </div>
     </div>
 </template>
 
 <script>
-import {mdiChevronRight,mdiChevronLeft} from '@mdi/js'
+import {mdiChevronRight,mdiChevronLeft,mdiStar} from '@mdi/js'
 import ProductItem from '@/components/productItem/ProductItem.vue';
 export default {
     name:"HomeView",
@@ -44,12 +126,11 @@ export default {
     data(){
         return{
             currentIndex:0,
+            indexBlog:0,
             slidesCount: 4,
-            mdiChevronRight,mdiChevronLeft
+            mdiChevronRight,mdiChevronLeft,mdiStar,
+            windowWidth: window.innerWidth
         }
-    },
-    mounted(){
-        this.startAutoSlide()
     },
     methods: {
         nextSlide() {
@@ -61,8 +142,30 @@ export default {
         startAutoSlide(){
             setInterval(()=>{
                 this.nextSlide()
-        },3000)
+                this.nextBlog()
+            },3000)
+        },
+        nextBlog(){
+            if(this.windowWidth>=768 && this.indexBlog<4){
+                this.indexBlog++
+            }
+            else if(this.windowWidth<768 && this.indexBlog<6){
+                this.indexBlog++
+            }
+            else{
+                this.indexBlog=0
+            }
+        },
+        handleResize() {
+            this.windowWidth = window.innerWidth; 
         }
+    },
+    mounted(){
+        this.startAutoSlide()
+        window.addEventListener('resize', this.handleResize); 
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.handleResize); 
     }
 }
 </script>
