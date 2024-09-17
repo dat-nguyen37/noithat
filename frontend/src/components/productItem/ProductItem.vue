@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col gap-2 border">
         <div class="relative w-full">
-            <a href=""><img src="/assets/image/New/new1.webp" alt="" width="480" height="480" class=""></a>
+            <a href="/product/dfdfd"><img src="/assets/image/New/new1.webp" alt="" width="480" height="480" class=""></a>
             <div class="absolute px-2 top-0 left-0 bg-red-500 text-white">-25%</div>
             <div class="absolute px-2 top-0 right-0 bg-orange-500 text-white">NEW</div>
         </div>

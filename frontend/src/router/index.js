@@ -1,4 +1,5 @@
 import HomeView from '@/views/HomeView.vue'
+import ProductDetail from '@/views/ProductDetail.vue'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -10,6 +11,11 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/product/:id',
+    name: 'productdetail',
+    component: ProductDetail
   },
 ]
 

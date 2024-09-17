@@ -25,10 +25,7 @@
             <div class="flex flex-col gap-2">
                 <h1 class="text-3xl font-medium">Mới nhất</h1>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
+                    <ProductItem v-for="item in 4" :key="item"/>
                 </div>
             </div>
             <!-- Sale -->
@@ -38,14 +35,7 @@
                     <a href="" class="text-red-500">Xem thêm</a>
                 </div>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
+                    <ProductItem v-for="item in 8" :key="item"/>
                 </div>
                 
             </div>
@@ -56,10 +46,7 @@
                     <a href="" class="text-red-500">Xem thêm</a>
                 </div>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
-                    <ProductItem/>
+                    <ProductItem v-for="item in 4" :key="item"/>
                 </div>     
             </div>
             <!-- blog -->

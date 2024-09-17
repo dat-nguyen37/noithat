@@ -1,5 +1,5 @@
 <template>
-    <footer class="flex flex-col w-full bg-gray-100">
+    <footer class="flex flex-col w-full bg-gray-100 mt-10">
         <div class="grid md:grid-cols-2 lg:grid-cols-4  gap-5 py-2 px-10">
             <div class="col-span-1 flex flex-col gap-2">
                 <h1 class="uppercase font-semibold">Nội Thất MOHO</h1>
