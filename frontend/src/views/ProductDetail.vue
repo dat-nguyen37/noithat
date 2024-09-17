@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col ">
-        <div class="flex gap-2 items-center px-5 md:px-10 h-10 bg-gray-100 text-gray-500">
+        <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
             <a href="/">Trang chủ </a>/<a href=""> Tất cả sản phẩm MOHO</a>/<p>Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
         </div>
         <div class="flex flex-col p-5 md:p-10">
