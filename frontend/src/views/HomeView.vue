@@ -94,22 +94,22 @@
              <div class="grid grid-cols-2 md:grid-cols-4">
                 <div class="flex flex-col items-center border p-5 text-gray-500">
                     <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
-                    <p class="text-xl">Giao Hàng & Lắp Đặt</p>
+                    <p class="text-base md:text-xl">Giao Hàng & Lắp Đặt</p>
                     <p class="text-sm">Miễn Phí</p>
                 </div>
                 <div class="flex flex-col items-center border p-5 text-gray-500">
                     <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
-                    <p class="text-xl">Đổi Trả 1 - 1</p>
+                    <p class="text-base md:text-xl">Đổi Trả 1 - 1</p>
                     <p class="text-sm">Miễn Phí</p>
                 </div>
                 <div class="flex flex-col items-center border p-5 text-gray-500">
                     <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
-                    <p class="text-xl">Bảo Hành 2 Năm</p>
+                    <p class="text-base md:text-xl">Bảo Hành 2 Năm</p>
                     <p class="text-sm">Miễn Phí</p>
                 </div>
                 <div class="flex flex-col items-center border p-5 text-gray-500">
                     <img src="https://theme.hstatic.net/200000065946/1001264503/14/vice_item_1_thumb.png?v=330" width="50" hight="50" alt="">
-                    <p class="text-xl">Tư Vấn Thiết Kế</p>
+                    <p class="text-base md:text-xl">Tư Vấn Thiết Kế</p>
                     <p class="text-sm">Miễn Phí</p>
                 </div>
              </div>
