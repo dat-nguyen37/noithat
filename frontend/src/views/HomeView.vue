@@ -82,7 +82,7 @@
                                         <VueIcon type="mdi" :path="mdiStar" size="15"/>
                                     </div>
                                 </div>
-                                <p class="line-clamp-3 text-sm h-15">Tốt bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb dssds</p>
+                                <p class="line-clamp-3 text-sm h-15 px-1">Tốt bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb dssds</p>
                             </div>
                         </div>
                     </div>
