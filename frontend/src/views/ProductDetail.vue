@@ -145,7 +145,7 @@
                     </ol>
                 </div>
             </div>
-            <div class="w-full flex flex-col">
+            <div class="w-full flex flex-col gap-5">
                 <h1 class=" text-3xl text-center uppercase"><u>Sản phẩm liên quan</u></h1>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
                     <ProductItem v-for="item in 8" :key="item"/>
