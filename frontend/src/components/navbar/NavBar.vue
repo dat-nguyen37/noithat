@@ -1,5 +1,5 @@
 <template>
-    <nav class="flex flex-col">
+    <nav class="flex flex-col border-b">
         <div class="bg-blue-800 text-sm py-1 px-5 text-center text-white">Nội Thất MOHO miễn phí giao hàng & lắp đặt tại TP.HCM, Hà Nội, Biên Hòa và một số khu vực tại Bình Dương</div>
         <div class="h-16 flex justify-between px-5 md:px-0 md:justify-around items-center gap-2">
             <div @click="openMenu" class="flex md:hidden relative items-center cursor-pointer">
@@ -35,9 +35,9 @@
             <div class="w-80 hidden md:flex">
                 <div class="flex items-center relative border-2 p-1 border-gray-100 w-80 h-10">
                     <input type="text" placeholder="Tìm kiếm sản phẩm..." class="outline-none w-2/3">
-                    <button class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
+                    <a href="/search?q=njdf" class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
                         <VueIcon type="mdi" :path="mdiMagnify" class="text-white"/>
-                    </button>
+                    </a>
                 </div>
             </div>
             <div class="flex items-center gap-5">
@@ -136,9 +136,9 @@
         <div class="w-full p-2">
             <div class="flex md:hidden items-center relative border-2 border-gray-100 w-full h-10">
                 <input type="text" placeholder="Tìm kiếm sản phẩm..." class="outline-none w-1/2">
-                <button class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
+                <a href="/search?q=sds" class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
                     <VueIcon type="mdi" :path="mdiMagnify" class="text-white"/>
-                </button>
+                </a>
             </div>
             <ul class="hidden md:flex gap-5 px-10 text-sm">
                 <li class="flex items-center py-4 relative group">
