@@ -118,7 +118,7 @@
                                 <p class="text-red-500 font-bold">0 <u>đ</u></p>
                             </div>
                             <div class="flex gap-2 justify-between text-white text-sm uppercase">
-                                <a href="" class="w-1/2 bg-gray-600 py-2">{{ $t('cart.buttons.show_cart') }}</a>
+                                <a href="/cart" class="w-1/2 bg-gray-600 py-2">{{ $t('cart.buttons.show_cart') }}</a>
                                 <a href="" class="w-1/2 bg-blue-800 py-2">{{ $t('cart.buttons.payment') }}</a>
                             </div>
                         </div>
