@@ -66,14 +66,14 @@
             </div>
             <div class="flex flex-col w-full border">
                 <div class="w-full h-auto bg-gray-100 flex items-center">
-                    <div @click="setTab('tab1')" class="p-2 hover:bg-gray-200 cursor-pointer">Mô tả</div>
-                    <div @click="setTab('tab2')" class="p-2 hover:bg-gray-200 cursor-pointer">Đánh giá (67)</div>
-                    <div @click="setTab('tab3')" class="p-2 hover:bg-gray-200 cursor-pointer">Chính sách</div>
+                    <div @click="CurrentTab = 'tab1'" :class="{'bg-gray-300': CurrentTab === 'tab1'}" class="p-2 hover:bg-gray-200 cursor-pointer">Mô tả</div>
+                    <div @click="CurrentTab = 'tab2'" :class="{'bg-gray-300': CurrentTab === 'tab2'}" class="p-2 hover:bg-gray-200 cursor-pointer">Đánh giá (67)</div>
+                    <div @click="CurrentTab = 'tab3'" :class="{'bg-gray-300': CurrentTab === 'tab3'}" class="p-2 hover:bg-gray-200 cursor-pointer">Chính sách</div>
                 </div>
-                <div id="tab1" :class="currentTab=='tab1'?'flex':'hidden'" class=" p-2">
+                <div v-if="CurrentTab === 'tab1'" class="flex p-2">
                     <p class="text-sm text-gray-500">Bàn làm việc văn phòng chân trắng mặt gỗ được làm bằng chất liệu gỗ công nghiệp cao cấp. Trên mặt bàn được phủ một lớp Melamine, sơn PU chống trầy xước tốt, ẩm mốc, bóng đẹp theo thời gian. Với độ dày 18mm hoặc có thể là 25mm theo yêu cầu riêng của khách. Bàn có thiết kế dạng thẳng mặt bàn vuông vức. Bàn có 4 chân được làm bằng khung sắt khi kê bàn ở bất kỳ mặt bằng nào.</p>
                 </div>
-                <div id="tab2" :class="currentTab=='tab2'?'flex':'hidden'"  class="w-full p-2">
+                <div v-if="CurrentTab === 'tab2'"  class="flex w-full p-2">
                     <div class="flex flex-col gap-2 w-full">
                         <div class="flex items-center">
                             <VueIcon v-for="i in 5" :key="i" type="mdi" :path="mdiStar" size="20"/>
@@ -102,7 +102,7 @@
                                     </div>
                                 </div>
                                 <input type="file" hidden id="file" name="image" @change="handleImageChange">
-                                <button type="button" class="p-2 border bg-blue-500 text-white self-center rounded-sm" @click="handleComment">Send</button>
+                                <button type="button" class="p-2 border bg-blue-500 text-white self-center rounded-sm">Send</button>
                             </div>
                         </div>
                         <div class=' mt-3 border-4 border-black h-[105vh] p-2 relative'>
@@ -129,11 +129,11 @@
                                 </div>
                             </div>
                             </div>
-                            <button class="w-full text-center bg-[#271511] text-white leading-8" @click="handleLimit">Xem thêm bình luận (10)</button>
+                            <button class="w-full text-center bg-[#271511] text-white leading-8">Xem thêm bình luận (10)</button>
                         </div>
                     </div>
                 </div>
-                <div id="tab3" :class="currentTab=='tab3'?'flex':'hidden'"  class="p-2 flex-col gap-2">
+                <div v-if="CurrentTab === 'tab3'"  class="flex p-2 flex-col gap-2">
                     <h1>Xem chi tiết các chính sách tại: </h1>
                     <ol class="text-blue-800">
                         <li><a href=""><b>- Khách Hàng Thân Thiết - MOHOhomie</b></a></li>
@@ -158,17 +158,16 @@ export default {
         return{
             mdiStar,mdiFacebook,mdiCheck,mdiClose,mdiCamera,
             image:[],
-            currentTab:"tab1"
+            CurrentTab:'tab1'
         }
+    },
+    mounted(){
+        console.log(this.CurrentTab)
     },
     methods:{
         remove(index) {
             this.image.splice(index, 1); 
             
-        },
-        setTab(tab){
-            this.currentTab=tab
-            console.log(this.currentTab)
         },
         async handleImageChange(event) {
             const file = event.target.files[0];

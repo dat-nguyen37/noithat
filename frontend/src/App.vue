@@ -7,10 +7,10 @@
       <div @click="scrollToTop()" :class="isSetting ? 'translate-y-0 opacity-100 duration-700' : 'translate-y-10 opacity-0 duration-100'" class="absolute transition-all -top-12 z-40">
         <VueIcon type="mdi" :path="mdiArrowUpBold" size="25" class="text-blue-500 w-8 h-8 rounded-full hover:bg-gray-700 flex justify-center items-center"/>
       </div>
-      <div @click="toggleLanguage" :class="isSetting ? 'translate-x-0 opacity-100 duration-300' : 'translate-x-10 translate-y-10 opacity-0 duration-300'" class="z-30 absolute transition-all -left-12 -top-8 w-8 h-8 rounded-full bg-yellow-400 text-sm font-bold flex justify-center items-center">
+      <div @click="toggleLanguage" :class="isSetting ? 'translate-x-0 opacity-100 duration-300' : 'translate-x-10 translate-y-10 opacity-0 duration-300'" class="z-40 absolute transition-all -left-12 -top-8 w-8 h-8 rounded-full bg-yellow-400 text-sm font-bold flex justify-center items-center">
         <p>{{ this.$i18n.locale ==='vn' ?'en' :'vn' }}</p>
       </div>
-      <div :class="isSetting ? 'translate-x-0 opacity-100 duration-100 ease-in' : 'translate-x-10  opacity-0 duration-700'" class="z-20 absolute transition-all -left-14 top-5 w-8 h-8 rounded-full hover:bg-gray-700 hover:text-white flex justify-center items-center">
+      <div :class="isSetting ? 'translate-x-0 opacity-100 duration-100 ease-in' : 'translate-x-10  opacity-0 duration-700'" class="z-40 absolute transition-all -left-14 top-5 w-8 h-8 rounded-full hover:bg-gray-700 hover:text-white flex justify-center items-center">
         <a href="/"><VueIcon type="mdi" :path="mdiHome" size="25"/></a>
       </div>
     </div>
