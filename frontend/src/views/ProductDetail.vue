@@ -145,15 +145,22 @@
                     </ol>
                 </div>
             </div>
+            <div class="w-full flex flex-col">
+                <h1 class=" text-3xl text-center uppercase"><u>Sản phẩm liên quan</u></h1>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <ProductItem v-for="item in 8" :key="item"/>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
 import { mdiFacebook, mdiStar,mdiCheck, mdiClose, mdiCamera } from '@mdi/js';
-
+import ProductItem from '@/components/productItem/ProductItem.vue';
 export default {
     name:"ProductDetail",
+    components:{ProductItem},
     data(){
         return{
             mdiStar,mdiFacebook,mdiCheck,mdiClose,mdiCamera,
