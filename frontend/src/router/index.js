@@ -1,4 +1,5 @@
 import CartView from '@/views/CartView.vue'
+import DepartmentView from '@/views/DepartmentView.vue'
 import HomeView from '@/views/HomeView.vue'
 import ProductDetail from '@/views/ProductDetail.vue'
 import SearchView from '@/views/SearchView.vue'
@@ -28,6 +29,11 @@ const routes = [
     path: '/search',
     name: 'search',
     component: SearchView
+  },
+  {
+    path: '/category/:id',
+    name: 'category',
+    component: DepartmentView
   },
 ]
 

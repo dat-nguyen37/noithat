@@ -11,7 +11,7 @@
                         </a>
                         <div :class="menuChild ? 'flex' : 'hidden'" class=" px-4">
                             <ul class="flex flex-col">
-                                <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
+                                <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="/category/fed" class="flex p-2">Bộ sưu tập</a></li>
                                 <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
                                 <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
                                 <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
@@ -146,7 +146,7 @@
                         <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
                     </a>
                     <ul class="hidden absolute group-hover:flex w-32 flex-col top-12 bg-white shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
-                        <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
+                        <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="/category/fed" class="flex p-2">Bộ sưu tập</a></li>
                         <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
                         <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
                         <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
