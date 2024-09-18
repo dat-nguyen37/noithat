@@ -24,7 +24,50 @@
                         </table>
                     </div>
                 </div>
-                <div class="col-span-4"></div>
+                <div class="col-span-4">
+                    <div class="flex flex-col gap-2">
+                        <div class="flex flex-col gap-2 font-bold border p-2">
+                            <h1 class="font-bold text-xl border-b py-2">Thông tin đơn hàng</h1>
+                            <div class="flex justify-between py-2 border-b">
+                                <p>Tổng tiền:</p>
+                                <p class="text-red-500">11,890,000 <u>đ</u></p>
+                            </div>
+                            <div class="uppercase bg-red-500 text-white font-bold p-2 text-center">Thanh toán</div>
+                        </div>
+                        <a href="/" class="flex items-center gap-2 justify-center">
+                            <VueIcon type="mdi" :path="mdiReply"/>
+                            <p>Tiếp tục mua hàng</p>
+                        </a>
+                        <div class="flex flex-col text-gray-600 text-sm gap-2">
+                            <p class="">
+                                (+) <strong>Không rủi ro. Đặt hàng trước, thanh toán sau tại nhà. Miễn phí giao hàng & lắp đặt</strong>
+                                tại tất cả quận huyện thuộc TP.HCM, Hà Nội, Khu đô thị Ecopark, Biên Hòa và một số khu vực thuộc Bình Dương (*)
+                            </p>
+                            <p class="">
+                                (+) Đơn hàng của quý khách sẽ được
+                                <strong>giao hàng trong vòng 3 ngày,</strong>
+                                vui lòng đợi nhân viên tư vấn xác nhận lịch giao hàng trước khi thực hiện chuyển khoản đơn hàng                            
+                            </p>
+                            <p class="">
+                                (+) <strong>Miễn phí 1 đổi 1 - Bảo hành 2 năm - Bảo trì trọn đời</strong> (**)
+                            </p>
+                            <p class="">
+                                (+) Tất cả sản phẩm được thiết kế bởi các chuyên gia thiết kế nội thất đến từ 
+                                 <strong>Đan Mạch và Hàn Quốc</strong>
+                            </p>
+                            <p class="">
+                                (+) <strong>Chất lượng Quốc Tế đảm bảo theo tiêu chuẩn</strong>
+                                cho người dùng tại Việt Nam
+                            </p>
+                            <p class="">
+                                (+) Sản xuất tại nhà máy SAVIMEX với gần
+                                <strong>40 năm kinh nghiệm</strong>
+                            </p>
+                            <p class="">(*) Không áp dụng cho danh mục Đồ Trang Trí</p>
+                            <p>(**) Không áp dụng cho các sản phẩm Clearance. Chỉ bảo hành 01 năm cho khung ghế, mâm và cần đối với Ghế Văn Phòng</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
      </div>
@@ -32,8 +75,14 @@
 
 <script>
 import CartItem from '@/components/cartItem/CartItem.vue';
+import { mdiReply,mdiCheckBold } from '@mdi/js';
 export default {
     name:"CartView",
-    components:{CartItem}
+    components:{CartItem},
+    data(){
+        return{
+            mdiReply,mdiCheckBold
+        }
+    }
 }
 </script>
