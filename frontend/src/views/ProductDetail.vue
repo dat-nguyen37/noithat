@@ -1,14 +1,22 @@
 <template>
     <div class="flex flex-col ">
         <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
-            <a href="/">Trang chủ </a>/<a href=""> Tất cả sản phẩm MOHO</a>/<p>Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
+            <a href="/">Trang chủ </a>/<a href=""> Tất cả sản phẩm MOHO</a>/<p class="line-clamp-1">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
         </div>
-        <div class="flex flex-col p-5 md:p-10">
+        <div class="flex flex-col gap-5 p-5 md:p-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                    <img src="/assets/image/New/new1.webp" alt="">
+                <div class="relative">
+                    <div class="w-full flex flex-col gap-2 sticky top-1">
+                    <img src="/assets/image/New/new1.webp" alt="" class="max-w-full h-auto">
+                    <div class="flex flex-wrap gap-3">
+                        <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
+                        <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
+                        <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
+
+                    </div>
                 </div>
-                <div class="flex flex-col">
+                </div>
+                <div class="relative flex flex-col">
                     <h1 class="text-xl font-bold">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</h1>
                     <div class="flex flex-col">
                         <div class="flex justify-between border-b pb-5">
@@ -56,18 +64,115 @@
                     </div>
                 </div>
             </div>
+            <div class="flex flex-col w-full border">
+                <div class="w-full h-auto bg-gray-100 flex items-center">
+                    <div @click="setTab('tab1')" class="p-2 hover:bg-gray-200 cursor-pointer">Mô tả</div>
+                    <div @click="setTab('tab2')" class="p-2 hover:bg-gray-200 cursor-pointer">Đánh giá (67)</div>
+                    <div @click="setTab('tab3')" class="p-2 hover:bg-gray-200 cursor-pointer">Chính sách</div>
+                </div>
+                <div id="tab1" :class="currentTab=='tab1'?'flex':'hidden'" class=" p-2">
+                    <p class="text-sm text-gray-500">Bàn làm việc văn phòng chân trắng mặt gỗ được làm bằng chất liệu gỗ công nghiệp cao cấp. Trên mặt bàn được phủ một lớp Melamine, sơn PU chống trầy xước tốt, ẩm mốc, bóng đẹp theo thời gian. Với độ dày 18mm hoặc có thể là 25mm theo yêu cầu riêng của khách. Bàn có thiết kế dạng thẳng mặt bàn vuông vức. Bàn có 4 chân được làm bằng khung sắt khi kê bàn ở bất kỳ mặt bằng nào.</p>
+                </div>
+                <div id="tab2" :class="currentTab=='tab2'?'flex':'hidden'"  class="w-full p-2">
+                    <div class="flex flex-col gap-2 w-full">
+                        <div class="flex items-center">
+                            <VueIcon v-for="i in 5" :key="i" type="mdi" :path="mdiStar" size="20"/>
+                            (5.0)
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <div class="flex items-center gap-5">
+                                <h1 class="font-bold">Viết đánh giá</h1>
+                                <select name="" id="" class="border-2 w-40 p-1">
+                                    <option value="">1sao</option>
+                                    <option value="">2sao</option>
+                                    <option value="">3sao</option>
+                                    <option value="">4sao</option>
+                                    <option value="">5sao</option>
+                                </select>
+                            </div>
+                            <textarea class="border outline-none p-2" placeholder="Viết gì đó ..."/>
+                            <div class="flex bottom-2 overflow-x-auto justify-between">
+                                <div class=" flex flex-wrap">
+                                    <label for="file" class="w-10 h-10 md:w-20 md:h-20 border-2 flex justify-center items-center hover:cursor-pointer"><VueIcon type="mdi" :path="mdiCamera" class=""/></label>
+                                    <div v-if="image" class="flex">
+                                        <div v-for="(img,index) in image" :key="index" class="relative">
+                                            <img :src="img" alt="" class="w-10 h-10 md:w-20 md:h-20 border-2 text-2xl block hover:cursor-pointer">
+                                            <VueIcon type="mdi" :path="mdiClose" @click="remove(index)" class="absolute top-0 right-0 p-1 hover:cursor-pointer border bg-slate-100 rounded-[50%]"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="file" hidden id="file" name="image" @change="handleImageChange">
+                                <button type="button" class="p-2 border bg-blue-500 text-white self-center rounded-sm" @click="handleComment">Send</button>
+                            </div>
+                        </div>
+                        <div class=' mt-3 border-4 border-black h-[105vh] p-2 relative'>
+                            <h1 class="text-sm md:text-base">Bình luận (10)</h1>
+                            <div class="h-[90vh] overflow-y-auto">
+                                <div class='border-b'>
+                                <div class='flex mt-3 items-center gap-3'>
+                                    <div class="border w-10 h-10 rounded-[50%]" >
+                                        <img src="/assets/image/New/new1.webp" alt="" class='rounded-[50%]'/> 
+                                    </div>
+                                    <div class=' flex flex-col'>
+                                        <p class="text-sm md:text-md">Dat Nguyen</p>
+                                        <div class="flex">
+                                            <VueIcon v-for="i in 5" :key="i" type="mdi" :path="mdiStar" size="15" class=" text-yellow-300"/>
+                                        </div>
+                                        <p class="text-[10px]">11-11-2024</p>
+                                    </div>
+                                </div>
+                                <div class='my-2 px-2'>
+                                    <span class="text-xs sm:text-base">qua tuyet voi</span>
+                                    <div class="flex gap-3">
+                                        <img v-for="src in image" :key="src" :src="src" class="w-10 h-10 sm:w-20 sm:h-20">
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <button class="w-full text-center bg-[#271511] text-white leading-8" @click="handleLimit">Xem thêm bình luận (10)</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="tab3" :class="currentTab=='tab3'?'flex':'hidden'"  class="p-2 flex-col gap-2">
+                    <h1>Xem chi tiết các chính sách tại: </h1>
+                    <ol class="text-blue-800">
+                        <li><a href=""><b>- Khách Hàng Thân Thiết - MOHOhomie</b></a></li>
+                        <li><a href=""><b>- Review Hay Nhận Quà Ngay - MOHOment</b></a></li>
+                        <li><a href=""><b>- Chính Sách Bán Hàng</b></a></li>
+                        <li><a href=""><b>- Chính sách Giao Hàng & Lắp Đặt</b></a></li>
+                        <li><a href=""><b>- Chính Sách Đổi Trả</b></a></li>
+                        <li><a href=""><b>- Chính Sách Bảo Hành - Bảo Trì</b></a></li>
+                    </ol>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-import { mdiFacebook, mdiStar,mdiCheck } from '@mdi/js';
+import { mdiFacebook, mdiStar,mdiCheck, mdiClose, mdiCamera } from '@mdi/js';
 
 export default {
     name:"ProductDetail",
     data(){
         return{
-            mdiStar,mdiFacebook,mdiCheck
+            mdiStar,mdiFacebook,mdiCheck,mdiClose,mdiCamera,
+            image:[],
+            currentTab:"tab1"
+        }
+    },
+    methods:{
+        remove(index) {
+            this.image.splice(index, 1); 
+            
+        },
+        setTab(tab){
+            this.currentTab=tab
+            console.log(this.currentTab)
+        },
+        async handleImageChange(event) {
+            const file = event.target.files[0];
+            this.image.push(file.name);
         }
     }
 }
