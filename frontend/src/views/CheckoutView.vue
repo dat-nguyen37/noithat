@@ -3,7 +3,7 @@
         <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
             <a href="/">Trang chủ </a>/<p class="line-clamp-1">Thông tin giao hàng</p>
         </div>
-        <div class="p-5 md:p-10">
+        <div class="p-10">
             <div class="grid lg:grid-cols-2 gap-5">
                 <div class="flex order-2 lg:order-1 flex-col gap-2">
                     <h1>Thông tin giao hàng</h1>
@@ -110,23 +110,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <a href="/cart" class="text-blue-700">Giỏ hàng</a>
-                        <div class="p-2 text-white bg-blue-700 rounded-lg">Hoàn tất đơn hàng</div>
+                    <div class="flex flex-col gap-2 md:flex-row justify-between items-center">
+                        <a href="/cart" class=" text-blue-700">Giỏ hàng</a>
+                        <div class="w-full md:w-40 text-center p-2 text-white bg-blue-700 rounded-lg cursor-pointer">Hoàn tất đơn hàng</div>
                     </div>
                 </div>
                 <div class="order-1 lg:order-2 bg-gray-100 p-5">
-                    <div class="w-full py-4 border-b border-black">
+                    <div @click="orderSumary=!orderSumary" class="flex justify-between cursor-pointer border-b border-black py-2">
+                        <div class="text-blue-500 flex items-center gap-2">
+                            <VueIcon type="mdi" :path="mdiCartOutline"/>
+                            <p class="text-sm">Hiển thị thông tin đơn hàng</p>
+                            <VueIcon type="mdi" :path="mdiChevronDown"/>
+                        </div>
+                        <p class="">11,890,000₫</p>
+                    </div>
+                    <div v-if="orderSumary" class="w-full py-4 border-b border-black">
                         <div class="flex gap-2">
-                            <div class="relative w-20 h-20 border-2 rounded-lg">
+                            <div class="relative w-14 h-14 sm:w-20 sm:h-20 border-2 rounded-lg">
                                 <img src="/assets/image/New/new1.webp" alt="" class="w-full h-full rounded-lg">
                                 <span class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-500 flex justify-center items-center text-white">1</span>
                             </div>
                             <div class="flex flex-col gap-2 text-gray-500 self-center">
-                                <p class="text-sm">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
-                                <p class="text-sm">1m5</p>
+                                <p class="text-xs sm:text-sm">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
+                                <p class="text-xs sm:text-sm">1m5</p>
                             </div>
-                            <p class="self-center text-sm">11,890,000₫</p>
+                            <p class="self-center text-xs sm:text-sm">11,890,000₫</p>
                         </div>
                     </div>
                     <div class="flex gap-3 py-4 border-b border-black">
@@ -143,7 +151,25 @@
                                     @focus="isFocused = true"
                                     @blur="isFocused = inputValue !== ''">
                         </div>
-                        <button class="text-white bg-gray-300 rounded-lg p-2">Sử dụng</button>
+                        <button class="text-white bg-gray-500 rounded-lg p-2">Sử dụng</button>
+                    </div>
+                    <div v-if="orderSumary" class="flex flex-col py-4">
+                        <div class="flex justify-between text-gray-500 border-black">
+                            <p>Tạm tính</p>
+                            <p>11,890,000₫</p>
+                        </div>
+                        <div class="flex justify-between text-gray-500">
+                            <p>Phí vận chuyển</p>
+                            <p>- 1,000,000₫</p>
+                        </div>
+                        <div class="flex justify-between text-gray-500 pb-2">
+                            <p>Ưu đãi</p>
+                            <p>- 1,000,000₫</p>
+                        </div>
+                        <div class="flex justify-between text-gray-500 pt-2 border-t border-black">
+                            <p class="text-black">Tổng cộng</p>
+                            <p class="text-xl"> 10,890,000₫</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -152,12 +178,15 @@
 </template>
 
 <script>
+import {mdiCartOutline, mdiChevronDown} from '@mdi/js'
 export default {
     name:"CheckoutView",
     data() {
         return {
+            mdiCartOutline,mdiChevronDown,
             isFocused: false,
-            inputValue: ''
+            inputValue: '',
+            orderSumary:false
         }
     }
 }
