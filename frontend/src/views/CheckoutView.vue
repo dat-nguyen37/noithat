@@ -126,15 +126,15 @@
                     </div>
                     <div v-if="orderSumary" class="w-full py-4 border-b border-black">
                         <div class="flex gap-2">
-                            <div class="relative w-12 h-12 sm:w-20 sm:h-20 border-2 rounded-lg">
-                                <img src="/assets/image/New/new1.webp" alt="" class="w-full h-full rounded-lg">
+                            <div class="min-w-12 min-h-12 relative">
+                                <img src="/assets/image/New/new1.webp" alt="" class="w-12 h-12 rounded-lg border border-black">
                                 <span class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-500 flex justify-center items-center text-white">1</span>
                             </div>
-                            <div class="flex flex-col gap-2 text-gray-500 self-center">
+                            <div class=" flex flex-col gap-2 text-gray-500 self-center">
                                 <p class="text-xs sm:text-sm">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
                                 <p class="text-xs sm:text-sm">1m5</p>
                             </div>
-                            <p class="self-center text-xs sm:text-sm">11,890,000₫</p>
+                            <p class=" self-center text-xs sm:text-sm">11,890,000₫</p>
                         </div>
                     </div>
                     <div class="flex gap-3 py-4 border-b border-black">
