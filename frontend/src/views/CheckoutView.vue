@@ -124,7 +124,7 @@
                         </div>
                         <p class="">11,890,000₫</p>
                     </div>
-                    <div v-if="orderSumary" class="w-full py-4 border-b border-black">
+                    <div :class="{'hidden lg:flex flex-col py-4 border-b border-black': !orderSumary, 'flex flex-col py-4 border-b border-black': orderSumary}">
                         <div class="flex gap-2">
                             <div class="min-w-12 min-h-12 relative">
                                 <img src="/assets/image/New/new1.webp" alt="" class="w-12 h-12 rounded-lg border border-black">
@@ -153,7 +153,7 @@
                         </div>
                         <button class="text-white bg-gray-500 rounded-lg p-2 text-sm">Sử dụng</button>
                     </div>
-                    <div v-if="orderSumary" class="flex flex-col py-4">
+                    <div :class="{'hidden lg:flex flex-col py-4': !orderSumary, 'flex flex-col py-4': orderSumary}">
                         <div class="flex justify-between text-gray-500 border-black">
                             <p>Tạm tính</p>
                             <p>11,890,000₫</p>
