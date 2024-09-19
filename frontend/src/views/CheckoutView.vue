@@ -137,8 +137,9 @@
                             <p class=" self-center text-xs sm:text-sm">11,890,000₫</p>
                         </div>
                     </div>
-                    <div class="flex gap-3 py-4 border-b border-black">
-                        <div class="flex flex-col w-2/3 relative rounded-lg">
+                    <div class="flex flex-col gap-3 py-4 border-b border-black">
+                        <div class="flex justify-between">
+                            <div class="flex flex-col w-2/3 relative rounded-lg">
                             <label :class="{
                                 'text-[10px] text-green-500 top-0 ': inputValue !== '', 
                                 'text-sm top-[10%] translate-y-1/3 hidden': inputValue === ''
@@ -150,8 +151,41 @@
                                     v-model="inputValue"
                                     @focus="isFocused = true"
                                     @blur="isFocused = inputValue !== ''">
+                            </div>
+                            <button class="text-white bg-gray-500 rounded-lg p-2 text-sm">Sử dụng</button>
                         </div>
-                        <button class="text-white bg-gray-500 rounded-lg p-2 text-sm">Sử dụng</button>
+                        <div class="flex gap-2 relative cursor-pointer">
+                            <VueIcon type="mdi" :path="mdiTicketPercent" class="text-blue-500"/>
+                            <p>Voucher</p>
+                            <div class="absolute  w-2/3 top-10 bg-white">
+                                <h1 class="p-2 border-b">Ưu đãi</h1>
+                                <div class="p-2">
+                                    <div class="grid grid-cols-6 max-h-20 bg-yellow-200 rounded-lg">
+                                        <div class="col-span-2 flex justify-center items-center w-full  relative overflow-hidden">
+                                            <div class=" absolute w-4 h-4 rounded-full -top-2 -right-2 bg-gray-100"></div>
+                                            <div class=" absolute w-4 h-4 rounded-full -bottom-2 -right-2 bg-gray-100"></div>
+                                            <div class="rounded-md w-16 h-16">
+                                                <img src="https://theme.hstatic.net/200000796751/1001266995/14/home_coupon_1_img.png?v=38" alt="" class="w-full h-full object-fill">
+                                            </div>
+                                        </div> 
+                                        <div class="col-span-4 w-full relative overflow-hidden">
+                                            <div class=" absolute w-4 h-4 rounded-full -top-2 -left-2 bg-gray-100"></div>
+                                            <div class=" absolute w-4 h-4 rounded-full -bottom-2 -left-2 bg-gray-100"></div>
+                                            <div class="p-2 flex flex-col gap-3">
+                                                <div>
+                                                    <p class="text-sm font-bold">Giảm 200,000 đ</p>
+                                                    <p class="text-xs">Đơn hàng từ 3 triệu</p>
+                                                </div>
+                                                <div class="flex justify-between">
+                                                    <p class="text-[10px]">HSD: 30/09/2024</p>
+                                                    <div class="text-xs">Coppy</div>
+                                                </div>
+                                            </div>
+                                        </div> 
+                                    </div>                        
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div :class="{'hidden lg:flex flex-col py-4': !orderSumary, 'flex flex-col py-4': orderSumary}">
                         <div class="flex justify-between text-gray-500 border-black">
@@ -178,12 +212,12 @@
 </template>
 
 <script>
-import {mdiCartOutline, mdiChevronDown} from '@mdi/js'
+import {mdiCartOutline, mdiChevronDown, mdiTicketPercent} from '@mdi/js'
 export default {
     name:"CheckoutView",
     data() {
         return {
-            mdiCartOutline,mdiChevronDown,
+            mdiCartOutline,mdiChevronDown,mdiTicketPercent,
             isFocused: false,
             inputValue: '',
             orderSumary:false
