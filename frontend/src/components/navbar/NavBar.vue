@@ -119,7 +119,7 @@
                             </div>
                             <div class="flex gap-2 justify-between text-white text-sm uppercase">
                                 <a href="/cart" class="w-1/2 bg-gray-600 py-2">{{ $t('cart.buttons.show_cart') }}</a>
-                                <a href="" class="w-1/2 bg-blue-800 py-2">{{ $t('cart.buttons.payment') }}</a>
+                                <a href="/checkout" class="w-1/2 bg-blue-800 py-2">{{ $t('cart.buttons.payment') }}</a>
                             </div>
                         </div>
 

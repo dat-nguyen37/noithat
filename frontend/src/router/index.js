@@ -1,4 +1,5 @@
 import CartView from '@/views/CartView.vue'
+import CheckoutView from '@/views/CheckoutView.vue'
 import DepartmentView from '@/views/DepartmentView.vue'
 import HomeView from '@/views/HomeView.vue'
 import ProductDetail from '@/views/ProductDetail.vue'
@@ -34,6 +35,11 @@ const routes = [
     path: '/category/:id',
     name: 'category',
     component: DepartmentView
+  },
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component: CheckoutView
   },
 ]
 
