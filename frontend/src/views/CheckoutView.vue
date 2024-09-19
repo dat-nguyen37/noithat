@@ -95,7 +95,7 @@
                         </div>
                     <div class="flex flex-col gap-2">
                         <h1 class="sm:text-xl">Phương thức thanh toán</h1>
-                        <div class="border flex flex-col text-sm text-gray-500">
+                        <div class="border flex flex-col text-xs sm:text-sm text-gray-500">
                             <div class="flex items-center gap-2 border-b p-4">
                                 <input type="radio" name="" id="" class="w-5 h-5">
                                 <label for="" class="flex items-center gap-2">
@@ -126,7 +126,7 @@
                     </div>
                     <div v-if="orderSumary" class="w-full py-4 border-b border-black">
                         <div class="flex gap-2">
-                            <div class="relative w-14 h-14 sm:w-20 sm:h-20 border-2 rounded-lg">
+                            <div class="relative w-12 h-12 sm:w-20 sm:h-20 border-2 rounded-lg">
                                 <img src="/assets/image/New/new1.webp" alt="" class="w-full h-full rounded-lg">
                                 <span class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-500 flex justify-center items-center text-white">1</span>
                             </div>
