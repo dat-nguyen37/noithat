@@ -1,10 +1,10 @@
 <template>
-    <div class="flex flex-col ">
+    <div class="flex flex-col">
         <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
             <a href="/">Trang chủ </a>/<p class="line-clamp-1">Thông tin giao hàng</p>
         </div>
-        <div class="p-10">
-            <div class="grid lg:grid-cols-2 gap-5">
+        <div class="flex flex-col p-5 sm:p-10">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
                 <div class="flex order-2 lg:order-1 flex-col gap-2">
                     <h1>Thông tin giao hàng</h1>
                     <div class="flex flex-col border p-2 relative rounded-lg">
@@ -94,7 +94,7 @@
                                 @blur="isFocused = inputValue !== ''"/>
                         </div>
                     <div class="flex flex-col gap-2">
-                        <h1 class="text-xl">Phương thức thanh toán</h1>
+                        <h1 class="sm:text-xl">Phương thức thanh toán</h1>
                         <div class="border flex flex-col text-sm text-gray-500">
                             <div class="flex items-center gap-2 border-b p-4">
                                 <input type="radio" name="" id="" class="w-5 h-5">
@@ -116,7 +116,7 @@
                     </div>
                 </div>
                 <div class="order-1 lg:order-2 bg-gray-100 p-5">
-                    <div @click="orderSumary=!orderSumary" class="flex justify-between cursor-pointer border-b border-black py-2">
+                    <div @click="orderSumary=!orderSumary" class=" flex lg:hidden justify-between cursor-pointer border-b border-black py-2">
                         <div class="text-blue-500 flex items-center gap-2">
                             <VueIcon type="mdi" :path="mdiCartOutline"/>
                             <p class="text-sm">Hiển thị thông tin đơn hàng</p>
@@ -151,7 +151,7 @@
                                     @focus="isFocused = true"
                                     @blur="isFocused = inputValue !== ''">
                         </div>
-                        <button class="text-white bg-gray-500 rounded-lg p-2">Sử dụng</button>
+                        <button class="text-white bg-gray-500 rounded-lg p-2 text-sm">Sử dụng</button>
                     </div>
                     <div v-if="orderSumary" class="flex flex-col py-4">
                         <div class="flex justify-between text-gray-500 border-black">
