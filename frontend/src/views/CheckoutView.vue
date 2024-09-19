@@ -1,5 +1,15 @@
 <template>
     <div class="flex flex-col">
+        <div v-if="openVoucher" class="fixed flex justify-center items-center z-20 inset-0 bg-black bg-opacity-50 h-[100vh] w-[100vw]" >
+            <div class=" w-80 bg-white relative">
+                <h1 class="p-2 border-b">Ưu đãi</h1>
+                <div class="flex flex-col gap-2 p-2 h-[calc(23rem-8px)] overflow-y-auto">
+                    <VoucherItem v-for="i in listVoucher" :key="i"/>
+                    <p v-if="listVoucher<=0">Bạn không có ưu đãi nào</p> 
+                </div>
+                <div @click="openVoucher=!openVoucher"><VueIcon type="mdi" :path="mdiClose" class="absolute top-0 right-0 cursor-pointer"/></div>
+            </div>
+        </div>
         <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
             <a href="/">Trang chủ </a>/<p class="line-clamp-1">Thông tin giao hàng</p>
         </div>
@@ -154,37 +164,9 @@
                             </div>
                             <button class="text-white bg-gray-500 rounded-lg p-2 text-sm">Sử dụng</button>
                         </div>
-                        <div class="flex gap-2 relative cursor-pointer">
+                        <div @click="openVoucher='true'" class="flex gap-2 w-24 cursor-pointer">
                             <VueIcon type="mdi" :path="mdiTicketPercent" class="text-blue-500"/>
                             <p>Voucher</p>
-                            <div class="absolute  w-2/3 top-10 bg-white">
-                                <h1 class="p-2 border-b">Ưu đãi</h1>
-                                <div class="p-2">
-                                    <div class="grid grid-cols-6 max-h-20 bg-yellow-200 rounded-lg">
-                                        <div class="col-span-2 flex justify-center items-center w-full  relative overflow-hidden">
-                                            <div class=" absolute w-4 h-4 rounded-full -top-2 -right-2 bg-gray-100"></div>
-                                            <div class=" absolute w-4 h-4 rounded-full -bottom-2 -right-2 bg-gray-100"></div>
-                                            <div class="rounded-md w-16 h-16">
-                                                <img src="https://theme.hstatic.net/200000796751/1001266995/14/home_coupon_1_img.png?v=38" alt="" class="w-full h-full object-fill">
-                                            </div>
-                                        </div> 
-                                        <div class="col-span-4 w-full relative overflow-hidden">
-                                            <div class=" absolute w-4 h-4 rounded-full -top-2 -left-2 bg-gray-100"></div>
-                                            <div class=" absolute w-4 h-4 rounded-full -bottom-2 -left-2 bg-gray-100"></div>
-                                            <div class="p-2 flex flex-col gap-3">
-                                                <div>
-                                                    <p class="text-sm font-bold">Giảm 200,000 đ</p>
-                                                    <p class="text-xs">Đơn hàng từ 3 triệu</p>
-                                                </div>
-                                                <div class="flex justify-between">
-                                                    <p class="text-[10px]">HSD: 30/09/2024</p>
-                                                    <div class="text-xs">Coppy</div>
-                                                </div>
-                                            </div>
-                                        </div> 
-                                    </div>                        
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div :class="{'hidden lg:flex flex-col py-4': !orderSumary, 'flex flex-col py-4': orderSumary}">
@@ -212,15 +194,19 @@
 </template>
 
 <script>
-import {mdiCartOutline, mdiChevronDown, mdiTicketPercent} from '@mdi/js'
+import {mdiCartOutline, mdiChevronDown, mdiClose, mdiTicketPercent} from '@mdi/js'
+import VoucherItem from '@/components/voucherItem/VoucherItem.vue';
 export default {
     name:"CheckoutView",
+    components:{VoucherItem},
     data() {
         return {
-            mdiCartOutline,mdiChevronDown,mdiTicketPercent,
+            mdiCartOutline,mdiChevronDown,mdiTicketPercent,mdiClose,
             isFocused: false,
             inputValue: '',
-            orderSumary:false
+            orderSumary:false,
+            listVoucher:4,
+            openVoucher:false
         }
     }
 }
