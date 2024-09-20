@@ -27,8 +27,8 @@
                     <li class="flex items-center p-2 hover:bg-gray-200 hover:text-red-500 border-b"><a href="" class="flex">Dịch Vụ </a>
                         <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
                     </li>
-                    <li class="flex items-center p-2 hover:bg-gray-200 hover:text-red-500 border-b"><a href="/page/about" class="flex">Về chúng tôi </a></li>
-                    <li class="flex items-center p-2 hover:bg-gray-200 hover:text-red-500 border-b"><a href="/page/contact" class="flex">Liên hệ </a></li>
+                    <li class="flex items-center p-2 hover:bg-gray-200 hover:text-red-500 border-b"><a href="/pages/about" class="flex">Về chúng tôi </a></li>
+                    <li class="flex items-center p-2 hover:bg-gray-200 hover:text-red-500 border-b"><a href="/pages/contact" class="flex">Liên hệ </a></li>
                 </ul>
             </div>
             <div class="col-span-4 justify-center">
