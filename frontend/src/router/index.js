@@ -1,6 +1,7 @@
 import AboutView from '@/views/AboutView.vue'
 import CartView from '@/views/CartView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
+import ContactView from '@/views/ContactView.vue'
 import DepartmentView from '@/views/DepartmentView.vue'
 import HomeView from '@/views/HomeView.vue'
 import ProductDetail from '@/views/ProductDetail.vue'
@@ -46,6 +47,11 @@ const routes = [
     path: '/pages/about',
     name: 'about',
     component: AboutView
+  },
+  {
+    path: '/pages/contact',
+    name: 'contact',
+    component: ContactView
   },
 ]
 
