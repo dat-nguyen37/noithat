@@ -205,7 +205,7 @@ export default {
             isFocused: false,
             inputValue: '',
             orderSumary:false,
-            listVoucher:4,
+            listVoucher:7,
             openVoucher:false
         }
     }

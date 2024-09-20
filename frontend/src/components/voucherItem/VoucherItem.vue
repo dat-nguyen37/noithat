@@ -17,7 +17,7 @@
                 </div>
                 <div class="flex justify-between items-center">
                     <p class="text-[10px]">HSD: 30/09/2024</p>
-                    <div class="text-xs p-1 bg-blue-500 text-white rounded-md cursor-pointer">Coppy</div>
+                    <div @click="copyToClipboard('vocher-200k')" class="text-xs p-1 bg-blue-500 text-white rounded-md cursor-pointer">{{voucherCode==='vocher-200k'? "Coppied":"Coppy"}}</div>
                 </div>
             </div>
         </div> 
@@ -27,6 +27,16 @@
 <script>
 export default {
     name:"VoucherItem",
-    
+    data(){
+        return{
+            voucherCode:""
+        }
+    },
+    methods:{
+        async copyToClipboard(text) {
+            await navigator.clipboard.writeText(text);
+            this.voucherCode=text
+        },
+    }
 }
 </script>
