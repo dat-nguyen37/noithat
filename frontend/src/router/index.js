@@ -1,3 +1,4 @@
+import AboutView from '@/views/AboutView.vue'
 import CartView from '@/views/CartView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
 import DepartmentView from '@/views/DepartmentView.vue'
@@ -40,6 +41,11 @@ const routes = [
     path: '/checkout',
     name: 'checkout',
     component: CheckoutView
+  },
+  {
+    path: '/pages/about',
+    name: 'about',
+    component: AboutView
   },
 ]
 
