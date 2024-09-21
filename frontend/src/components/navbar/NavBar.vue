@@ -53,13 +53,18 @@
                     </div>
                     <div id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-screen -right-[120px] md:w-[23rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <div class="overflow-hidden w-full">
-                            <div class="flex w-[200%] transform transition-transform duration-500 ease-out" 
-                                :style="{ transform: recoverPanel ? 'translateX(-50%)' : 'translateX(0)' }">
+                            <div class="flex w-[300%] transform transition-transform duration-500 ease-out" 
+                                :style="{ transform: recoverPanel === 'login' ? 'translateX(-33.33%)' : 
+                                recoverPanel === 'register' ? 'translateX(0%)' : 
+                                'translateX(-66.66%)' }">
                                 <div class="w-[100vw]">
-                                    <LoginPanel @openRecoverPanel="openRecoverPanel"/>
+                                    <RegisterPanel @openLoginPanel="openLoginPanel"/>
                                 </div>
                                 <div class="w-[100vw]">
-                                    <RecoverPanel @openRecoverPanel="openRecoverPanel"/>
+                                    <LoginPanel @openRecoverPanel="openRecoverPanel" @openRegisterPanel="openRegisterPanel"/>
+                                </div>
+                                <div class="w-[100vw]">
+                                    <RecoverPanel @openLoginPanel="openLoginPanel"/>
                                 </div>
                             </div>
                         </div>
@@ -152,17 +157,18 @@
 import {mdiMagnify,mdiAccountOutline ,mdiChevronDown,mdiTrashCanOutline ,mdiShoppingOutline,mdiChevronRight ,mdiHeart,mdiViewHeadline,mdiChevronUp,mdiClose      } from '@mdi/js'
 import RecoverPanel from '../recover/RecoverPanel.vue';
 import LoginPanel from '../login/LoginPanel.vue';
+import RegisterPanel from '../register/RegisterPanel.vue';
 export default {
     name:"NavBar",
-    components:{RecoverPanel,LoginPanel},
+    components:{RecoverPanel,LoginPanel,RegisterPanel},
     data() {
         return {
             menu:false,
             menuChild:false,
             login:false,
             cart:false,
-            loinPanel:true,
-            recoverPanel:false,
+            loinPanel:true, 
+            recoverPanel:'login',
             mdiMagnify ,
             mdiAccountOutline,
             mdiChevronDown ,
@@ -186,9 +192,14 @@ export default {
         this.cart=false
         this.menu=false
     },
-    openRecoverPanel(){
-        this.recoverPanel=!this.recoverPanel
-        this.loginPanel=!this.loginPanel
+    openLoginPanel(data){
+        this.recoverPanel=data
+    },
+    openRegisterPanel(data){
+        this.recoverPanel=data
+    },
+    openRecoverPanel(data){
+        this.recoverPanel=data
     },
     openCart(){
         this.cart=!this.cart
