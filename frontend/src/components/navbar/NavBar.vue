@@ -51,11 +51,10 @@
                         <p class="text-sm text-gray-500">{{ $t('login.buttons.submit') }} / {{ $t('register.buttons.submit') }}</p>
                         <p class="flex text-sm font-medium">{{ $t('acount.header') }} <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
                     </div>
-                    <div id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-[calc(100vw-18px)] -right-[120px] md:w-[23rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
+                    <div id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-[100vw] sm:w-[calc(100vw-18px)] -right-[128px] sm:-right-[120px] md:w-[23rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <div class="overflow-hidden w-full">
                             <div class="flex w-[200%] transform transition-transform duration-500 ease-out" 
                                 :style="{ transform: recoverPanel ? 'translateX(-50%)' : 'translateX(0)' }">
-                                <!-- Mỗi panel chiếm 100% chiều rộng của màn hình -->
                                 <div class="w-[100vw]">
                                     <LoginPanel @openRecoverPanel="openRecoverPanel"/>
                                 </div>
