@@ -51,37 +51,16 @@
                         <p class="text-sm text-gray-500">{{ $t('login.buttons.submit') }} / {{ $t('register.buttons.submit') }}</p>
                         <p class="flex text-sm font-medium">{{ $t('acount.header') }} <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
                     </div>
-                    <div id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-screen -right-[120px] md:w-[24rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
-                        <div class="overflow-hidden">
-                            <div class="flex w-[100%] transform transition-transform duration-500 ease-out" :style="{ transform: recoverPanel ? 'translateX(-100%)' : 'translateX(0)' }">
-                                <div id="login-panel" class="min-w-full md:min-w-[24rem] flex flex-col gap-2 p-2">
-                                    <h1 class="text-xl uppercase">{{ $t('login.header') }}</h1>
-                                    <p class="text-gray-400">{{ $t('login.description') }}</p>
-                                    <input type="email" :placeholder="$t('login.inputs.email_placeholder')" class="outline-none border p-2">
-                                    <input type="password" :placeholder="$t('login.inputs.password_placeholder')" class="outline-none border p-2">
-                                    <button class="bg-black text-white font-bold py-2">{{ $t('login.buttons.submit') }}</button>
-                                    <p class="text-gray-400">{{ $t('login.account_actions.new_user_prompt') }} <a href="" class="text-blue-500">{{ $t('login.account_actions.new_user_prompt') }}</a></p>
-                                    <p class="text-gray-400">{{ $t('login.forgot_password.prompt') }} <span @click="openRecoverPanel" class="text-blue-500 cursor-pointer">{{ $t('login.forgot_password.reset_action') }}</span></p>
+                    <div id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-[calc(100vw-18px)] -right-[120px] md:w-[23rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
+                        <div class="overflow-hidden w-full">
+                            <div class="flex w-[200%] transform transition-transform duration-500 ease-out" 
+                                :style="{ transform: recoverPanel ? 'translateX(-50%)' : 'translateX(0)' }">
+                                <!-- Mỗi panel chiếm 100% chiều rộng của màn hình -->
+                                <div class="w-[100vw]">
+                                    <LoginPanel @openRecoverPanel="openRecoverPanel"/>
                                 </div>
-                                <div id="recover-panel" class="min-w-full md:min-w-[24rem] flex flex-col gap-2 p-2">
-                                    <h1 class="text-xl uppercase">{{ $t('recover.headerr') }}</h1>
-                                    <div class="flex gap-2">
-                                        <input type="radio" id="emailCheck" @change="changeRecoverLogin" :checked="recoverLogin==='email'&& 'email'" value="email" name="recoverLogin" class="">
-                                        <label for="emailCheck">{{ $t('recover.email_option') }}</label>
-                                    </div>
-                                    <div class="flex gap-2">
-                                        <input type="radio" id="phoneCheck" @change="changeRecoverLogin" :checked="recoverLogin==='phone'&& 'phone'" value="phone" name="recoverLogin" class="">
-                                        <label for="phoneCheck">{{ $t('recover.phone_option') }}</label>
-                                    </div>
-                                    <div v-if="recoverLogin==='email'" class="flex flex-col gap-2">
-                                        <input type="email" :placeholder="$t('recover.inputs.email_placeholder')" class="outline-none border p-2">
-                                        <button class="bg-black text-white font-bold py-2">{{ $t('recover.buttons.recover') }}</button>
-                                        <p class="text-gray-400">{{ $t('recover.return_to_login') }} <span @click="openRecoverPanel" class="text-blue-500 cursor-pointer">{{ $t('recover.back_to_login') }}</span></p>
-                                    </div>
-                                    <div v-if="recoverLogin==='phone'" class="flex flex-col gap-2">
-                                        <input type="phone" :placeholder="$t('recover.inputs.phone_placeholder')" class="outline-none border p-2">
-                                        <button class="bg-black text-white font-bold py-2">{{ $t('recover.buttons.send_code') }}</button>
-                                    </div>
+                                <div class="w-[100vw]">
+                                    <RecoverPanel @openRecoverPanel="openRecoverPanel"/>
                                 </div>
                             </div>
                         </div>
@@ -160,7 +139,7 @@
                 <li class="flex items-center"><a href="">Khuyến Mãi </a>
                     <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
                 </li>
-                <li class="flex items-center"><a href="">Dịch Vụ </a>
+                <li class="flex items-center"><a href="/pages/about">Dịch Vụ </a>
                     <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
                 </li>
                 <li class="flex items-center"><a href="/pages/about">Về chúng tôi </a></li>
@@ -172,15 +151,17 @@
 
 <script>
 import {mdiMagnify,mdiAccountOutline ,mdiChevronDown,mdiTrashCanOutline ,mdiShoppingOutline,mdiChevronRight ,mdiHeart,mdiViewHeadline,mdiChevronUp,mdiClose      } from '@mdi/js'
+import RecoverPanel from '../recover/RecoverPanel.vue';
+import LoginPanel from '../login/LoginPanel.vue';
 export default {
     name:"NavBar",
+    components:{RecoverPanel,LoginPanel},
     data() {
         return {
             menu:false,
             menuChild:false,
             login:false,
             cart:false,
-            recoverLogin:'email',
             loinPanel:true,
             recoverPanel:false,
             mdiMagnify ,
@@ -205,9 +186,6 @@ export default {
         this.login=!this.login
         this.cart=false
         this.menu=false
-    },
-    changeRecoverLogin(e){
-        this.recoverLogin=e.target.value
     },
     openRecoverPanel(){
         this.recoverPanel=!this.recoverPanel
