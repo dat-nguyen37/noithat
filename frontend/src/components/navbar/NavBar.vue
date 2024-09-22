@@ -51,7 +51,7 @@
                         <p class="text-sm text-gray-500">{{ $t('login.buttons.submit') }} / {{ $t('register.buttons.submit') }}</p>
                         <p class="flex text-sm font-medium">{{ $t('acount.header') }} <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
                     </div>
-                    <div v-if="user" class="absolute top-14 text-sm z-20 w-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
+                    <div v-if="user" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm z-20 w-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <ul class="">
                             <li class="border-b p-2"><a href="/profile">Profile</a></li>
                             <li class="border-b p-2">Logout</li>

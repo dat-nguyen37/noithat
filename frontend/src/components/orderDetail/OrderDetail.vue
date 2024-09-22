@@ -54,7 +54,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="flex justify-end">
+            <table class="flex justify-end text-sm sm:text-base">
                 <tfoot>
                     <tr>
                         <td class="w-2/4">Khuyến mại</td>

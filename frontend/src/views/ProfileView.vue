@@ -1,15 +1,9 @@
 <template>
-    <div class="w-full">
-        <div class="flex w-full bg-gray-100 h-14 px-5 ">
-            <ul class="flex items-center gap-3 text-sm text-gray-500">
-                <li><a href="/" class="hover:text-yellow-600">Trang chủ </a></li>
-                <li><a href="" class="hover:text-yellow-600">
-                    <VueIcon type="mdi" :path="mdiChevronDown"/>
-                    Trang khách hàng
-                </a></li>
-            </ul>
+    <div class="flex flex-col ">
+        <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
+            <a href="/">Trang chủ </a>/ <p>Trang khách hàng</p>
         </div>
-        <div class="p-10">
+        <div class="p-5">
             <div class="flex flex-col md:grid grid-cols-12 gap-5">
                 <div class="col-span-3 md:col-span-4">
                     <div @click="showMenu" class="flex items-center justify-between bg-black text-white text-center p-2">

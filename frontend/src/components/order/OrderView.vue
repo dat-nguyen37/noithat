@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w-full">
         <h1 class="text-xl font-bold">Đơn hàng của bạn<div class="border-b-4 border-yellow-500 w-14"></div></h1>
         <div class="py-2">
             <table class="w-full table border">
