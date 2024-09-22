@@ -2,8 +2,8 @@
     <div class="w-full">
         <h1 class="text-xl font-bold">Đơn hàng của bạn<div class="border-b-4 border-yellow-500 w-14"></div></h1>
         <div class="py-2">
-            <table class="w-full table border">
-                <thead class="bg-yellow-800 text-sm">
+            <table class="w-full table border text-xs sm:text-sm">
+                <thead class="bg-yellow-800">
                     <tr>
                         <th class="text-white border border-white p-2">Đơn hàng</th>
                         <th class="text-white border border-white p-2">Ngày</th>
