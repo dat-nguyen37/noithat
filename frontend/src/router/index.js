@@ -1,3 +1,7 @@
+import Acount from '@/components/acount/Acount.vue'
+import ChangePass from '@/components/changepass/ChangePass.vue'
+import OrderView from '@/components/order/OrderView.vue'
+import OrderDetail from '@/components/orderDetail/OrderDetail.vue'
 import AboutView from '@/views/AboutView.vue'
 import CartView from '@/views/CartView.vue'
 import CheckoutView from '@/views/CheckoutView.vue'
@@ -5,6 +9,7 @@ import ContactView from '@/views/ContactView.vue'
 import DepartmentView from '@/views/DepartmentView.vue'
 import HomeView from '@/views/HomeView.vue'
 import ProductDetail from '@/views/ProductDetail.vue'
+import ProfileView from '@/views/ProfileView.vue'
 import SearchView from '@/views/SearchView.vue'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
@@ -53,6 +58,37 @@ const routes = [
     name: 'contact',
     component: ContactView
   },
+  {
+    path: '/profile',
+    component: ProfileView,
+    meta: { requiresAuth: true },
+
+    children: [
+      {
+        path: '',
+        name: 'account', 
+        component: Acount
+      },
+      {
+        path: '/profile/changePass',
+        name: 'changePass', 
+        component: ChangePass
+      },
+      {
+        path: '/profile/orders',
+        name: 'order', 
+        component: OrderView
+      },
+      {
+        path: '/profile/order/:id',
+        name:'orderdetail',
+        component: OrderDetail,
+        meta: {
+          title: 'Chi tiết đơn hàng',
+        },
+      },
+    ]
+  }
 ]
 
 const router = new VueRouter({
@@ -60,5 +96,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.title) {
+    document.title = to.meta.title;
+  }
+  next();
+});
+
 
 export default router
