@@ -47,11 +47,17 @@
                     <a @click="openLogin">
                         <VueIcon type="mdi" :path="mdiAccountOutline " class="self-center cursor-pointer" size="30"/>
                     </a>
-                    <div @click="openLogin" class="hidden lg:flex flex-col cursor-pointer">
-                        <p class="text-sm text-gray-500">{{ $t('login.buttons.submit') }} / {{ $t('register.buttons.submit') }}</p>
-                        <p class="flex text-sm font-medium">{{ $t('acount.header') }} <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
+                    <div  @click="openLogin" class="hidden lg:flex flex-col cursor-pointer">
+                        <div v-if="!$store.state.user">
+                            <p class="text-sm text-gray-500">{{ $t('login.buttons.submit') }} / {{ $t('register.buttons.submit') }}</p>
+                            <p class="flex text-sm font-medium">{{ $t('acount.header') }} <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
+                        </div>
+                        <div v-else>
+                            <p class="text-sm text-gray-500">{{ $t('acount.header') }}</p>
+                            <p class="flex text-sm font-medium">{{ $store.state.user.email }} <VueIcon type="mdi" :path="mdiChevronDown " size="20"/></p>
+                        </div>
                     </div>
-                    <div v-if="user" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm z-20 w-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
+                    <div v-if="$store.state.user" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm z-20 w-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <ul class="">
                             <li class="border-b p-2"><a href="/profile">Profile</a></li>
                             <li class="border-b p-2">Logout</li>
@@ -179,7 +185,6 @@ export default {
             mdiAccountOutline,
             mdiChevronDown ,
             mdiShoppingOutline,mdiHeart,mdiViewHeadline,mdiChevronUp,mdiClose ,mdiChevronRight,mdiTrashCanOutline,
-            user:true
         };
   },
   methods:{

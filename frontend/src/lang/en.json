@@ -37,24 +37,16 @@
         "back_to_login": "Back to login"
       },
   "register": {
-        "header": "Login to your account",
-        "description": "Enter your email and password:",
-        "buttons": {
-          "submit": "Sign Up"
-        },
-        "inputs": {
-          "email_placeholder": "Enter email or phone number",
-          "password_placeholder": "Password"
-        },
-        "account_actions": {
-          "new_user_prompt": "New customer?",
-          "create_account": "Create account"
-        },
-        "forgot_password": {
-          "prompt": "Forgot password?",
-          "reset_action": "Restore password"
-        }
-      },
+    "header": "Register Account",
+    "buttons": {
+      "submit": "Register"
+    },
+    "inputs": {
+      "email_placeholder": "Enter your registration email"
+    },
+    "return_to_login": "Already have an account?",
+    "back_to_login": "Return to login"
+},
   "acount":{
     "header":"My acount"
   },

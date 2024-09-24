@@ -1,20 +1,42 @@
 <template>
     <div id="register-panel" class="w-full md:min-w-[23rem] flex flex-col gap-5 p-5">
-            <h1 class="text-xl uppercase">{{ $t('login.header') }}</h1>
-            <input type="text" placeholder="Nhập email đăng kí" class="p-2 outline-none border">
-            <p class="text-gray-400">{{ $t('recover.return_to_login') }} <span @click="openLoginPanel" class="text-blue-500 cursor-pointer">{{ $t('recover.back_to_login') }}</span></p>
-            <button class="w-full p-2 text-white bg-black">Xác nhận</button>
+            <h1 class="text-xl uppercase">{{ $t('register.header') }}</h1>
+            <input type="text" :placeholder="$t('register.inputs.email_placeholder')" v-model="email" class="p-2 outline-none border">
+            <p class="text-gray-400">{{ $t('register.return_to_login') }} <span @click="openLoginPanel" class="text-blue-500 cursor-pointer">{{ $t('register.back_to_login') }}</span></p>
+            <button @click="Register" class="w-full flex justify-center items-center gap-2 p-2 text-white bg-black">
+                <VueIcon v-if="$store.state.loading"  type="mdi" :path="mdiRotateRight" class="animate-spin text-white"/>
+                {{ $t('register.buttons.submit') }}</button>
+                <p v-if="message" class="text-red-500">{{ message }}</p>
     </div>
 </template>
 
 <script>
+import axios from "axios"
+import {mdiRotateRight} from '@mdi/js'
 export default {
     name:"RegisterPanel",
     data(){
         return{
+            mdiRotateRight,
+            email:"",
+            message:""
         }
     },
+    mounted(){
+        console.log(this.$store.state.user)
+    },
     methods:{
+        async Register(){
+            this.$store.commit('LOGIN_START')
+            try {
+                const res=await axios.post("https://localhost:7224/User/register",{email:this.email})
+                this.message=res.data
+                this.$store.commit('LOGIN_SUCCESS',)
+            } catch (err) {
+                this.message=err.response.data
+                this.$store.commit('LOGIN_FAILURE','')
+            }
+        },
         openLoginPanel(){
             this.$emit('openLoginPanel','login')
         }

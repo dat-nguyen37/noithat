@@ -40,11 +40,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="border-b">
+                    <tr class="border-b text-sm sm:text-base">
                         <td class="p-2 flex items-center gap-5">
-                            <img src="/Image/food/1.webp" alt="" class="w-10 h-10 object-cover">
+                            <img src="/assets/Image/New/new1.webp" alt="" class="w-10 h-10 object-cover">
                             <div class="flex flex-col">
-                                <span>Mì xào bò</span>
+                                <span>Giường Ngủ Gỗ Tràm MOHO HOBRO 301</span>
                                 <span class="lg:hidden">x19</span>
                             </div>
                         </td>

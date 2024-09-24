@@ -6,12 +6,12 @@
         <div class="p-5">
             <div class="flex flex-col md:grid grid-cols-12 gap-5">
                 <div class="col-span-3 md:col-span-4">
-                    <div @click="showMenu" class="flex items-center justify-between bg-black text-white text-center p-2">
-                        <div>
+                    <div @click="showMenu" class="flex items-center justify-between cursor-pointer bg-black text-white text-center p-2">
+                        <div class="">
                             <h1 class="text-xl">Trang tài khoản</h1>
                             <strong class="text-sm">Xin chào, <span class="text-yellow-600">datnguyen</span> !</strong>
                         </div>
-                        <VueIcon type="mdi" :path="menu ? 'mdiChevronUp' : 'mdiChevronDown'" />
+                        <VueIcon type="mdi" :path="menu ? mdiChevronUp :mdiChevronDown" class="text-white"/>
                     </div>
                     <ul v-if="menu" class="py-2 text-sm bg-gray-100">
                         <li><a href="/profile" class="flex hover:text-yellow-600 hover:bg-gray-700 p-2">Thông tin tài khoản</a></li>
@@ -27,14 +27,14 @@
     </div>
 </template>
 <script>
-import { mdiChevronDown,mdiChevronUp,mdiArrowRight,mdiArrowLeft } from '@mdi/js';
+import { mdiChevronUp,mdiChevronDown} from '@mdi/js';
 
 export default {
     name:"ProfileView",
     data(){
         return{
             menu:true,
-            mdiChevronDown,mdiArrowRight,mdiArrowLeft,mdiChevronUp
+            mdiChevronDown,mdiChevronUp
         }
     },
     methods:{

@@ -40,23 +40,15 @@
       "back_to_login": "Trở về đăng nhập"
     },
   "register": {
-    "header": "Đăng nhập tài khoản",
-    "description": "Nhập email và mật khẩu của bạn:",
+    "header": "Đăng kí tài khoản",
     "buttons": {
       "submit": "Đăng ký"
     },
     "inputs": {
-      "email_placeholder": "Nhập email hoặc số điện thoại",
-      "password_placeholder": "Mật khẩu"
+      "email_placeholder": "Nhập email dăng kí"
     },
-    "account_actions": {
-      "new_user_prompt": "Khách hàng mới?",
-      "create_account": "Tạo tài khoản"
-    },
-    "forgot_password": {
-      "prompt": "Quên mật khẩu?",
-      "reset_action": "Khôi phục mật khẩu"
-    }
+    "return_to_login": "Bạn đã có tài khoản?",
+    "back_to_login": "Trở về đăng nhập"
   } ,
   "acount":{
     "header":"Tài khoản của tôi"
