@@ -35,7 +35,6 @@ export default {
                     password:this.password
                 })
                 this.$store.commit('LOGIN_SUCCESS',res.data.user)
-                this.$route.push("/")
             } catch (err) {
                 this.message=err.response.data
                 this.$store.commit('LOGIN_FAILURE','')

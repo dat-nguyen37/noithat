@@ -88,6 +88,49 @@ const routes = [
         },
       },
     ]
+  },
+  {
+  path: '/admin',
+    component: ()=> import('../views/AdminView.vue'),
+    meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+    children: [
+      {
+        path: '', 
+        name: 'adminHome',
+        component: ()=> import('../components/chart/ChartView.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+      {
+        path: 'product',
+        name: 'adminProduct', 
+        component: ()=> import('../components/admin/Product/ProductView.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+      {
+        path: 'category',
+        name: 'adminCategory', 
+        component:()=> import('../components/admin/Category/CategoryView.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+      {
+        path: 'order',
+        name: 'adminOrder', 
+        component:()=> import('../components/admin/Order/OrderView.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+      {
+        path: 'user',
+        name: 'adminUser', 
+        component:()=> import('../components/admin/User/UserView.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+      {
+        path: 'news',
+        name: 'adminNews', 
+        component:()=> import('../components/admin/News/NewsView.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+    ]
   }
 ]
 

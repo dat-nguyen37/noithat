@@ -2,24 +2,23 @@
     <nav class="flex flex-col border-b">
         <div class="bg-blue-800 text-sm py-1 px-5 text-center text-white">Nội Thất MOHO miễn phí giao hàng & lắp đặt tại TP.HCM, Hà Nội, Biên Hòa và một số khu vực tại Bình Dương</div>
         <div class="h-16 flex justify-between px-5 md:px-0 md:justify-around items-center gap-2">
-            <div @click="openMenu" class="flex md:hidden relative items-center cursor-pointer">
+            <div @click="openMenu" class="flex lg:hidden relative items-center cursor-pointer">
                 <VueIcon type="mdi" :path="!menu ? mdiViewHeadline : mdiClose  " size="40"/>
-                <ul id="menu" :class="menu ? 'flex':'hidden'" class="absolute flex-col font-bold bg-white w-[calc(100vw-17px)] z-10 top-14 -left-5 shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
-                    <li @click.stop="openMenuChild" class="flex flex-col border-b">
-                        <a href="javascript:void(0)" class="flex p-2 hover:bg-gray-200">BST Bắc Âu
-                            <VueIcon type="mdi" :path="!menuChild ? mdiChevronDown : mdiChevronUp" size="20"/>
+                <ul id="menu" :class="menu ? 'flex':'hidden'" class="absolute  flex-col font-bold bg-white w-[50vw] z-10 top-14 -left-5 shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
+                    <li v-for="(item, index) in category" :key="item.categoryTypeId" class="flex flex-col">
+                        <a href="javascript:void(0)" class="flex p-2 hover:bg-gray-200" @click.stop="toggleMenu(index)">
+                            {{ item.name }}
+                            <VueIcon type="mdi" :path="isMenuOpen(index) ? mdiChevronUp : mdiChevronDown" size="20" />
                         </a>
-                        <div :class="menuChild ? 'flex' : 'hidden'" class=" px-4">
+                        <div :class="isMenuOpen(index) ? 'flex' : 'hidden'" class="px-4">
                             <ul class="flex flex-col">
-                                <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="/category/fed" class="flex p-2">Bộ sưu tập</a></li>
-                                <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
-                                <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
-                                <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
+                                <li v-for="childItem in item.categories" :key="childItem.categoryId" class="hover:bg-gray-300 hover:text-red-500 border-b">
+                                <router-link :to="{ name: 'category', params: { id: childItem.categoryId } }" class="flex p-2" >
+                                    {{ childItem.name }}
+                                </router-link>
+                                </li>
                             </ul>
                         </div>
-                    </li>
-                    <li class="flex items-center p-2 hover:bg-gray-200 hover:text-red-500 border-b"><a href="" class="flex">Tủ Bếp </a>
-                        <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
                     </li>
                     <li class="flex items-center p-2 hover:bg-gray-200 hover:text-red-500 border-b"><a href="" class="flex">Khuyến Mãi </a>
                         <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
@@ -60,7 +59,7 @@
                     <div v-if="$store.state.user" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm z-20 w-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <ul class="">
                             <li class="border-b p-2"><a href="/profile">Profile</a></li>
-                            <li class="border-b p-2">Logout</li>
+                            <li @click="logout" class="border-b p-2">Logout</li>
                         </ul>
                     </div>
                     <div v-else id="login" :class="login ?'flex':'hidden'" class="absolute top-14 text-sm w-screen -right-[120px] md:w-[23rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
@@ -137,20 +136,16 @@
                     <VueIcon type="mdi" :path="mdiMagnify" class="text-white"/>
                 </a>
             </div>
-            <ul class="hidden md:flex gap-5 px-10 text-sm">
-                <li class="flex items-center py-4 relative group">
-                    <a href="" class="flex">BST Bắc Âu
+            <ul class="hidden lg:flex gap-5 px-10 text-sm">
+                <li v-for="items in category" :key="items.categoryTypeId" class="flex items-center py-4 relative group">
+                    <a href="javascript:void(0)" class="flex">{{ items.name }}
                         <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
                     </a>
                     <ul class="hidden absolute group-hover:flex w-32 flex-col z-50 top-12 bg-white shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
-                        <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="/category/fed" class="flex p-2">Bộ sưu tập</a></li>
-                        <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
-                        <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
-                        <li class="hover:bg-gray-300 hover:text-red-500 border-b"><a href="" class="flex p-2">Bộ sưu tập</a></li>
+                        <li v-for="item in items.categories" :key="item.categoryId" class="hover:bg-gray-300 hover:text-red-500 border-b">
+                            <router-link :to="{name:'category',params:{id:item.categoryId}}" class="flex p-2">{{item.name}}</router-link>
+                        </li>
                     </ul>
-                </li>
-                <li class="flex items-center"><a href="">Tủ Bếp </a>
-                    <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
                 </li>
                 <li class="flex items-center"><a href="">Khuyến Mãi </a>
                     <VueIcon type="mdi" :path="mdiChevronDown " size="20"/>
@@ -170,34 +165,47 @@ import {mdiMagnify,mdiAccountOutline ,mdiChevronDown,mdiTrashCanOutline ,mdiShop
 import RecoverPanel from '../recover/RecoverPanel.vue';
 import LoginPanel from '../login/LoginPanel.vue';
 import RegisterPanel from '../register/RegisterPanel.vue';
+import axios from 'axios'
 export default {
     name:"NavBar",
     components:{RecoverPanel,LoginPanel,RegisterPanel},
     data() {
         return {
             menu:false,
-            menuChild:false,
+            openMenuIndexes: [],
             login:false,
             cart:false,
             loinPanel:true, 
             recoverPanel:'login',
+            category:"",
             mdiMagnify ,
             mdiAccountOutline,
             mdiChevronDown ,
             mdiShoppingOutline,mdiHeart,mdiViewHeadline,mdiChevronUp,mdiClose ,mdiChevronRight,mdiTrashCanOutline,
         };
   },
+  mounted(){
+        this.getCategory()
+    },
   methods:{
     openMenu(){
         this.menu=!this.menu
         this.login=false
         this.cart=false
-        if (!this.menu) {
-        this.menuChild = false;
+    },
+    toggleMenu(index) {
+      const menuIndex = this.openMenuIndexes.indexOf(index);
+      if (menuIndex > -1) {
+        // Nếu menu đã mở, đóng nó
+        this.openMenuIndexes.splice(menuIndex, 1);
+      } else {
+        // Nếu menu chưa mở, mở nó
+        this.openMenuIndexes.push(index);
       }
     },
-    openMenuChild(){
-        this.menuChild=!this.menuChild
+    isMenuOpen(index) {
+      // Kiểm tra xem menu có đang mở hay không
+      return this.openMenuIndexes.includes(index);
     },
     openLogin(){
         this.login=!this.login
@@ -217,7 +225,18 @@ export default {
         this.cart=!this.cart
         this.login=false
         this.menu=false
-    }
+    },
+    logout(){
+        this.$store.commit('LOGOUT')
+    },
+    async getCategory(){
+            try {
+                const res=await axios.get("https://localhost:7224/CategoryType/getAll")
+                this.category=res.data
+            } catch (err) {
+                console.log(err)
+            }
+        }
   }
 }
 </script>

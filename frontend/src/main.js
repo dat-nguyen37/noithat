@@ -7,6 +7,17 @@ import VueI18n from 'vue-i18n'
 import vnMessage from './lang/vn.json'
 import enMessage from './lang/en.json'
 import store from '../src/store/store'
+import VueApexCharts from 'vue-apexcharts'
+
+Vue.use(VueApexCharts)
+
+Vue.component('apexChart', VueApexCharts)
+import VueNumeralFilterInstaller from 'vue-numeral-filter';
+
+Vue.use(VueNumeralFilterInstaller);
+import 'viewerjs/dist/viewer.css'
+import Viewer from 'v-viewer'
+Vue.use(Viewer)
 
 Vue.config.productionTip = false
 Vue.component('VueIcon', VueIcon);

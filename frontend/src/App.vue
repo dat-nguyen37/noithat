@@ -1,6 +1,6 @@
 <template>
   <div id="app" class="flex flex-col min-h-screen">
-    <NavBar/>
+    <NavBar v-if="!$route.meta.hideNavbar"/>
     <router-view/>
     <div @click="openSetting" class="fixed right-4 bottom-24 flex justify-center items-center cursor-pointer">
       <VueIcon type="mdi" :path="mdiCog " class="animate-spin z-50  w-14 h-14 rounded-full bg-yellow-500"/>
@@ -14,7 +14,7 @@
         <a href="/"><VueIcon type="mdi" :path="mdiHome" size="25"/></a>
       </div>
     </div>
-    <Footer/>
+    <Footer v-if="!$route.meta.hideFooter"/>
   </div>
 </template>
 
