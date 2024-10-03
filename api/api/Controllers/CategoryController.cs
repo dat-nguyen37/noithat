@@ -47,6 +47,14 @@ namespace Server.Controllers
 
             return Ok(category);
         }
+        [HttpGet("getAll")]
+        public async Task<IActionResult> getAll()
+        {
+            var category = await _context.categories
+                .ToListAsync();
+
+            return Ok(category);
+        }
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)

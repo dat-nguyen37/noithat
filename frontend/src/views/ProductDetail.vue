@@ -1,13 +1,13 @@
 <template>
     <div class="flex flex-col ">
         <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
-            <a href="/">Trang chủ </a>/<a href=""> Tất cả sản phẩm MOHO</a>/<p class="line-clamp-1">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
+            <a href="/">Trang chủ </a>/<a href=""> {{ product.category.name }}</a>/<p class="line-clamp-1">{{ product.name }}</p>
         </div>
         <div class="flex flex-col gap-5 p-5 md:p-10">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="relative">
                     <div class="w-full flex flex-col gap-2 sticky top-1">
-                    <img src="/assets/image/New/new1.webp" alt="" class="max-w-full h-auto">
+                    <img :src="product.image" alt="" class="max-w-full h-auto">
                     <div class="flex flex-wrap gap-3">
                         <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
                         <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
@@ -17,7 +17,7 @@
                 </div>
                 </div>
                 <div class="relative flex flex-col">
-                    <h1 class="text-xl font-bold">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</h1>
+                    <h1 class="text-xl font-bold">{{ product.name }}</h1>
                     <div class="flex flex-col">
                         <div class="flex justify-between border-b pb-5">
                             <div class="flex items-center">
@@ -28,20 +28,19 @@
                                     <p>Chia sẻ:</p>
                                     <VueIcon type="mdi" :path="mdiFacebook" size="30" class="text-blue-500 "/>
                                 </div>
-                                <p>Đã bán: 1</p>
+                                <p>Đã bán: {{ product.sell || 0 }}</p>
                             </div>
                         </div>
                         <div class="flex items-center gap-3 py-2 text-center border-b">
-                            <div class="w-16 py-1 font-bold bg-gray-100 text-red-500">-40%</div>
-                            <p class="font-bold text-red-500">11,890,000₫</p>
-                            <s class="">19,816,667 <u>đ</u></s>
+                            <div v-if="discounted" class="w-16 py-1 font-bold bg-gray-100 text-red-500">-{{discounted}}%</div>
+                            <p class="font-bold text-red-500">{{discountedPrice ?? price | numeral}}₫</p>
+                            <s v-if="discountedPrice" class="">{{price | numeral}} <u>đ</u></s>
                         </div>
-                        <div class="flex items-center flex-wrap gap-3 py-2 text-center border-b text-sm">
-                            <div class="w-20 h-10 border flex justify-center items-center">1m5 chữ I</div>
-                            <div class="w-20 h-10 border flex justify-center items-center">2m3 chữ I</div>
-                            <div class="w-20 h-10 border flex justify-center items-center">2m7 chữ I</div>    
-                            <div class="w-20 h-10 border flex justify-center items-center">2m6 chữ L</div>
-                            <div class="w-20 h-10 border flex justify-center items-center">3m4 chữ L</div>
+                        <div v-if="colors.length>0" class="flex items-center flex-wrap gap-3 py-2 text-center border-b text-sm">
+                            <div v-for="item in colors" :key="item.productColorId" @click="selectedColor=item.color.name" :class="{'border-2 border-black': selectedColor === item.color.name}" class="cursor-pointer w-10 h-10 rounded-full border flex justify-center items-center" :style="{ backgroundColor: item.color.code }"></div>
+                        </div>
+                        <div v-if="sizes.length>0" class="flex items-center flex-wrap gap-3 py-2 text-center border-b text-sm">
+                            <div v-for="item in sizes" :key="item.productSizeId" @click="handleSelectedSize(item.size.name)" :class="{'bg-black text-white': selectedSize === item.size.name}" class="cursor-pointer w-20 h-10 border flex justify-center items-center">{{  item.size.name }}</div>
                         </div>
                         <div class="flex flex-col gap-3">
                             <b class="flex gap-2 text-red-500">Bảo hành: <p class="text-black">2 năm</p></b>
@@ -71,7 +70,7 @@
                     <div @click="CurrentTab = 'tab3'" :class="{'bg-gray-300': CurrentTab === 'tab3'}" class="p-2 hover:bg-gray-200 cursor-pointer">Chính sách</div>
                 </div>
                 <div v-if="CurrentTab === 'tab1'" class="flex p-2">
-                    <p class="text-sm text-gray-500">Bàn làm việc văn phòng chân trắng mặt gỗ được làm bằng chất liệu gỗ công nghiệp cao cấp. Trên mặt bàn được phủ một lớp Melamine, sơn PU chống trầy xước tốt, ẩm mốc, bóng đẹp theo thời gian. Với độ dày 18mm hoặc có thể là 25mm theo yêu cầu riêng của khách. Bàn có thiết kế dạng thẳng mặt bàn vuông vức. Bàn có 4 chân được làm bằng khung sắt khi kê bàn ở bất kỳ mặt bằng nào.</p>
+                    <p class="text-sm text-gray-500">{{ product.description }}</p>
                 </div>
                 <div v-if="CurrentTab === 'tab2'"  class="flex w-full p-2">
                     <div class="flex flex-col gap-2 w-full">
@@ -148,7 +147,7 @@
             <div class="w-full flex flex-col gap-5">
                 <h1 class="text-xl md:text-3xl text-center uppercase"><u>Sản phẩm liên quan</u></h1>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem v-for="item in 8" :key="item"/>
+                    <ProductItem v-for="item in relatedProducts.product" :key="item.productId" :item="item"/>
                 </div>
             </div>
         </div>
@@ -158,6 +157,7 @@
 <script>
 import { mdiFacebook, mdiStar,mdiCheck, mdiClose, mdiCamera } from '@mdi/js';
 import ProductItem from '@/components/productItem/ProductItem.vue';
+import axios from 'axios';
 export default {
     name:"ProductDetail",
     components:{ProductItem},
@@ -165,11 +165,28 @@ export default {
         return{
             mdiStar,mdiFacebook,mdiCheck,mdiClose,mdiCamera,
             image:[],
-            CurrentTab:'tab1'
+            CurrentTab:'tab1',
+            product:"",
+            productId:this.$route.params.id,
+            relatedProducts:"",
+            colors:"",
+            sizes:"",
+            selectedColor:"",
+            selectedSize:"",
+            price:0,
+            discountedPrice:0,
+            discounted:""
         }
     },
     mounted(){
-        console.log(this.CurrentTab)
+        this.getProduct()
+        this.changeTotal()
+    },
+    watch:{
+        "this.$route.params.id":function(newValue){
+            this.productId=newValue
+            this.getProduct()
+        }
     },
     methods:{
         remove(index) {
@@ -179,6 +196,37 @@ export default {
         async handleImageChange(event) {
             const file = event.target.files[0];
             this.image.push(file.name);
+        },
+        handleSelectedSize(name){
+            this.selectedSize=name
+            this.changeTotal()
+        },
+        changeTotal(){
+            const size = this.sizes.filter(s => s.size.name === this.selectedSize);
+            this.price=size[0].price
+            this.discounted=size[0].discounted
+            this.discountedPrice=size[0].discountedPrice
+        },
+        async getProduct(){
+            try {
+                const res=await axios.get(`https://localhost:7224/Product/getOne/${this.productId}`)
+                this.product=res.data
+                this.colors=res.data.productColors
+                this.sizes=res.data.productSizes
+                this.selectedSize=res.data.productSizes[0].size.name
+                this.getRelatedProducts()
+                this.changeTotal()
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async getRelatedProducts(){
+            try {
+                const res=await axios.get(`https://localhost:7224/Product/getByCategory/${this.product.category.categoryId}?page=1&limit=4`)
+                this.relatedProducts=res.data
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 }

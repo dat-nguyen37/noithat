@@ -1,34 +1,44 @@
 <template>
     <div class="flex flex-col ">
         <div class="flex flex-wrap gap-2 items-center text-xs md:text-sm px-5 md:px-10 py-2 bg-gray-100 text-gray-500">
-            <a href="/">Trang chủ </a>/<a href=""> Danh mục </a>/<p class="line-clamp-1">Nội Thất Phòng Ngủ</p>
+            <a href="/">Trang chủ </a>/<a href=""> Danh mục </a>/<p class="line-clamp-1">{{ products.category.name }}</p>
         </div>
         <img src="/assets/slider/slide1.webp" alt="" class="min-w-full h-[25vh] md:h-[50vh]">
         <div class="flex flex-col gap-5 p-5 md:p-10">
-            <h1 class="font-bold text-base sm:text-xl md:text-3xl">Nội Thất Phòng Ngủ</h1>
+            <h1 class="font-bold text-base sm:text-xl md:text-3xl">{{products.category.name}}</h1>
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 items-center gap-10 text-sm sm::text-base">
-                <select name="" id="" class="border-b outline-none p-2">
+                <select name="sort" id="" v-model="sort" class="border-b outline-none p-2">
                     <option value="">Sản phẩm nổi bật</option>
-                    <option value="">Giá: Tăng dần</option>
-                    <option value="">Giá: Giảm dần</option>
-                    <option value="">Mới nhất</option>
+                    <option value="price_asc">Giá: Tăng dần</option>
+                    <option value="price_desc">Giá: Giảm dần</option>
+                    <option value="new">Mới nhất</option>
                     <option value="">Bán chạy nhất</option>
                 </select>
-                <select name="" id="" class="border-b outline-none p-2">
-                    <option value="">Giá sản phẩm</option>
-                    <option value="">Dưới 500,000₫</option>
-                    <option value="">500,000₫ - 1,000,000₫</option>
-                    <option value="">1,000,000₫ - 2,000,000₫</option>
-                    <option value="">2,000,000₫ - 5,000,000₫</option>
-                    <option value="">Trên 5,000,000₫</option>
-                </select>
+                <div class="flex gap-2 w-full">
+                    <select name="min" id="" v-model="min" class="border-b w-full outline-none p-2">
+                        <option value="">Tối thiểu</option>
+                        <option value="0">0</option>
+                        <option value="1000000">1,000,000₫</option>
+                        <option value="5000000">5,000,000₫</option>
+                        <option value="10000000">10,000,000₫</option>
+                        <option value="20000000">20,000,000₫</option>
+                    </select>
+                    <select name="max" id="" v-model="max" class="border-b w-full outline-none p-2">
+                        <option value="">Tối đa</option>
+                        <option value="1000000">1,000,000₫</option>
+                        <option value="5000000">5,000,000₫</option>
+                        <option value="10000000">10,000,000₫</option>
+                        <option value="20000000">20,000,000₫</option>
+                        <option value="50000000">50,000,000₫</option>
+                    </select>
+                </div>
                 <div class="flex items-center justify-between  border-b p-2  relative group">
                     <p>Màu sắc: {{ selectColor }}</p>
                     <VueIcon type="mdi" :path="mdiChevronDown"/>
                     <div class="absolute -z-10 opacity-0 ease-in-out duration-700 translate-y-40 transform group-hover:z-10 group-hover:translate-y-10 group-hover:opacity-100 top-0 border w-full left-0 p-2 text-sm text-gray-500 bg-white">
                         <div class="flex gap-3 flex-wrap">
-                            <li v-for="(color,index) in colors" :key="index" class="list-none">
-                                <label @click="selectedColor(color.name)" :style="{ backgroundColor: color.hex }" :class="selectColor === color.name ? 'border-2 border-gray-700' :''" class="w-6 h-6 rounded-full inline-block cursor-pointer"></label>
+                            <li v-for="color in colors" :key="color.colorId" class="list-none">
+                                <label @click="selectedColor(color.name)" :style="{ backgroundColor: color.code }" :class="selectColor === color.name ? 'border-2 border-gray-700' :''" class="w-6 h-6 rounded-full inline-block cursor-pointer"></label>
                             </li>
                         </div>
                     </div>
@@ -50,17 +60,26 @@
             <div class="flex gap-5">
                 <div class="flex gap-2 flex-wrap ">
                     <div v-if="selectSize" class="flex px-1 items-center gap-1 w-auto text-sm border text-gray-500 rounded-md">Kích thước: <b>{{ selectSize }}</b>
-                        <VueIcon @click="deleteSize" type="mdi" :path="mdiClose" class="cursor-pointer"/>
+                        <div @click="deleteSize"><VueIcon type="mdi" :path="mdiClose" class="cursor-pointer"/></div>
                     </div>  
                     <div v-if="selectColor" class="flex px-1 items-center gap-1 w-auto text-sm border text-gray-500 rounded-md">Màu sắc: <b>{{ selectColor }}</b>
-                        <VueIcon @click="deleteColor" type="mdi" :path="mdiClose" class="cursor-pointer"/>
+                        <div @click="deleteColor"><VueIcon type="mdi" :path="mdiClose" class="cursor-pointer"/></div>
+                    </div>
+                    <div v-if="min" class="flex px-1 items-center gap-1 w-auto text-sm border text-gray-500 rounded-md">Giá tối thiểu: <b>{{ min }}</b>
+                        <div @click="deleteMin"><VueIcon type="mdi" :path="mdiClose" class="cursor-pointer"/></div>
+                    </div>  
+                    <div v-if="max" class="flex px-1 items-center gap-1 w-auto text-sm border text-gray-500 rounded-md">Giá tối đa: <b>{{ max }}</b>
+                        <div @click="deleteMax"><VueIcon type="mdi" :path="mdiClose" class="cursor-pointer"/></div>
+                    </div>
+                    <div v-if="sort" class="flex px-1 items-center gap-1 w-auto text-sm border text-gray-500 rounded-md">Sắp xếp: <b>{{ sort }}</b>
+                        <div @click="deleteSort"><VueIcon type="mdi" :path="mdiClose" class="cursor-pointer"/></div>
                     </div>
                 </div>
             </div>
-            <div class="sm:w-40 text-center p-2 uppercase text-white bg-black cursor-pointer">Áp dụng</div>
+            <div @click="handleFilter" class="sm:w-40 text-center p-2 uppercase text-white bg-black cursor-pointer">Áp dụng</div>
             <div>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem v-for="item in 12" :key="item"/>
+                    <ProductItem v-for="item in products.product" :key="item.productId" :item="item"/>
                 </div>
                 <div class="flex justify-center gap-5 text-gray-500 items-center">
                     <VueIcon type="mdi" :path="mdiArrowLeftThin" size="30" class="hover:text-black cursor-pointer"/>
@@ -79,27 +98,76 @@
 
 <script>
 import {mdiChevronDown, mdiClose, mdiFilterOutline,mdiArrowRightThin,mdiArrowLeftThin} from "@mdi/js"
-import data from "../color.json"
 import ProductItem from "@/components/productItem/ProductItem.vue";
+import axios from "axios";
 export default {
     name:"DepartmentView",
     components:{ProductItem},
     data(){
         return{
-            colors:data,
+            colors:"",
             mdiFilterOutline,mdiChevronDown,mdiClose,mdiArrowRightThin,mdiArrowLeftThin,
             selectColor:"",
             selectSize:"",
             sort:"",
+            min:"",
+            max:"",
+            products:"",
+            page:1,
+            limit:8,
+            categoryId:this.$route.params.id,
         }
     },
+    watch:{
+        "$route.params.id":function(newValue){
+            this.categoryId=newValue
+            this.getProducts()
+        }
+    },
+    mounted(){
+        this.getProducts()
+        this.getColors()
+    },
     methods:{
-        
         selectedColor(color){
             this.selectColor=color
         },
         selectedSize(size){
             this.selectSize=size
+        },
+        deleteSize(){
+            this.selectSize=""
+        },
+        deleteColor(){
+            this.selectColor=""
+        },
+        deleteMax(){
+            this.max=""
+        },
+        deleteMin(){
+            this.min=""
+        },
+        deleteSort(){
+            this.sort=""
+        },
+        handleFilter(){
+            this.getProducts()
+        },
+        async getProducts(){
+            try {
+                const res=await axios.get(`https://localhost:7224/Product/getByCategory/${this.categoryId}?page=${this.page}&limit=${this.limit}&sort=${this.sort}&minPrice=${this.min}&maxPrice=${this.max}&size=${this.selectSize}&color=${this.selectColor}`)
+                this.products=res.data
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async getColors(){
+            try {
+                const res=await axios.get(`https://localhost:7224/Color/getAll`)
+                this.colors=res.data
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 

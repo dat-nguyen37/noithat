@@ -25,7 +25,7 @@
             <div class="flex flex-col gap-2">
                 <h1 class="text-3xl font-medium">Mới nhất</h1>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem v-for="item in 4" :key="item"/>
+                    <ProductItem v-for="item in productNew" :key="item" :item="item"/>
                 </div>
             </div>
             <!-- Sale -->
@@ -35,7 +35,7 @@
                     <a href="" class="text-red-500">Xem thêm</a>
                 </div>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem v-for="item in 8" :key="item"/>
+                    <ProductItem v-for="item in productDiscount" :key="item.productId" :item="item"/>
                 </div>
                 
             </div>
@@ -107,6 +107,7 @@
 <script>
 import {mdiChevronRight,mdiChevronLeft,mdiStar} from '@mdi/js'
 import ProductItem from '@/components/productItem/ProductItem.vue';
+import axios from 'axios';
 export default {
     name:"HomeView",
     components:{ProductItem},
@@ -116,7 +117,9 @@ export default {
             indexBlog:0,
             slidesCount: 4,
             mdiChevronRight,mdiChevronLeft,mdiStar,
-            windowWidth: window.innerWidth
+            windowWidth: window.innerWidth,
+            productNew:"",
+            productDiscount:""
         }
     },
     methods: {
@@ -145,11 +148,29 @@ export default {
         },
         handleResize() {
             this.windowWidth = window.innerWidth; 
+        },
+        async getProductNew(){
+            try {
+                const res=await axios.get("https://localhost:7224/Product/getNew")
+                this.productNew=res.data
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async getProductDiscount(){
+            try {
+                const res=await axios.get("https://localhost:7224/Product/getDiscount")
+                this.productDiscount=res.data
+            } catch (err) {
+                console.log(err)
+            }
         }
     },
     mounted(){
         this.startAutoSlide()
         window.addEventListener('resize', this.handleResize); 
+        this.getProductNew()
+        this.getProductDiscount()
     },
     beforeDestroy() {
         window.removeEventListener('resize', this.handleResize); 

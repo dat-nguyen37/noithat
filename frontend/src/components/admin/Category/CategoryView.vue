@@ -39,7 +39,7 @@ export default {
             add:false,
             data:[],
             page:1,
-            limit:15,
+            limit:5,
             mdiTextBoxEditOutline,mdiTrashCanOutline
         }
     },

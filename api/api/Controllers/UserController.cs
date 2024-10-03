@@ -84,16 +84,18 @@ namespace api.Controllers
             {
                 return BadRequest("Mật khẩu không chính xác");
             }
-            var token = GenerateJwtToken(user);
+            var Token = GenerateJwtToken(user);
 
             var User = new
             {
                 email=user.Email,
                 phone=user.Phone,
                 address=user.Address,
+                role=user.Role,
+                token=Token,
             };
 
-            return Ok(new { User, Token=token});
+            return Ok(User);
         }
 
         [HttpPost("recover")]
@@ -125,6 +127,15 @@ namespace api.Controllers
                    $"<br><a href='http://localhost:8080'>Đi đến website</a>"
            );
             return Ok("Mật khẩu mới đã được gửi. Vui lòng kiểm tra.");
+        }
+
+        [HttpGet("getByPage")]
+        public async Task<IActionResult> getBypage(int page = 1, int limit = 10)
+        {
+            var user = await _context.users
+                .Skip((page - 1) * limit)
+                .Take(limit).ToListAsync();
+            return Ok(user);
         }
         private string GenerateJwtToken(User user)
         {

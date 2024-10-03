@@ -34,7 +34,10 @@ export default {
                     email:this.email,
                     password:this.password
                 })
-                this.$store.commit('LOGIN_SUCCESS',res.data.user)
+                this.$store.commit('LOGIN_SUCCESS',res.data)
+                if (this.$store.getters.isAdmin) {
+                    this.$router.push('/admin');
+                }   
             } catch (err) {
                 this.message=err.response.data
                 this.$store.commit('LOGIN_FAILURE','')

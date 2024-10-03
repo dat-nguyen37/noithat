@@ -9,7 +9,6 @@
                 <thead class="border">
                     <tr class="bg-gray-400">
                         <th scope="col" class="border">Name</th>
-                        <th scope="col" class="border">Category</th>
                         <th scope="col" class="border">Price</th>
                         <th scope="col" class="border">Image</th>
                         <th scope="col" class="border">Action</th>
@@ -18,21 +17,26 @@
                 <tbody>
                     <tr v-for="item in data" :key="item._id">
                         <td scope="col" class="border text-center">{{item.name}}</td>
-                        <td scope="col" class="border text-center">{{ item.categoryName }}</td>
                         <td scope="col" class="border text-center">{{ item.price }}</td>
-                        <td scope="col" class="border flex justify-center" v-viewer>
-                            <img :src="item.image" class="w-10 h-10" alt="">
+                        <td scope="col" class="border text-center">
+                            <div class="flex justify-center" v-viewer>
+                                <img :src="item.image" class="w-10 h-10" alt="">
+                            </div>
+                            <viewer :src="item.image">
+                                <img :src="src">
+                            </viewer>
                         </td>
-                        <viewer :src="item.image">
-                            <img :src="src">
-                        </viewer>
-                        <td scope="col" class="text-red-500 border text-center text-xl">
-                            <font-awesome-icon icon="edit" class="mx-2 hover:cursor-pointer" @click="handleUpdate(item.id)"/>
-                            <font-awesome-icon icon="trash" class="mx-2 hover:cursor-pointer" @click="handleDelete(item.id)"/>
+                        <td scope="col" class="border text-center">
+                            <div class="flex items-center justify-center gap-2">
+                                <div>
+                                    <VueIcon type="mdi" :path="mdiTextBoxEditOutline" class="text-blue-500 hover:cursor-pointer" />
+                                </div>
+                                <div @click="handleDelete(item.categoryId)">
+                                    <VueIcon type="mdi" :path="mdiTrashCanOutline"  class="text-red-500 hover:cursor-pointer"/>
+                                </div>
+                            </div>
                         </td>
                     </tr>
-                    
-                    
                 </tbody>
             </table>
         </div>
@@ -42,7 +46,7 @@
                 <font-awesome-icon icon="arrow-right" @click="nextPage" class="p-2 bg-blue-400 hover:cursor-pointer"/>
             </div>
         </div> -->
-        <AddProduct :open="add" @close="handleClose"/>
+        <AddProduct :open="add" @close="handleClose" :getproduct="getproduct"/>
         <EditProduct :open="update" :productIdToUpdate="productIdToUpdate" @close="handleClose" @update="handleLoad"/>
     </div>
 </template>
@@ -51,6 +55,7 @@ import AddProduct from './AddProduct.vue'
 import EditProduct from './EditProduct.vue'
 
 import axios from 'axios'
+import {mdiTrashCanOutline,mdiTextBoxEditOutline} from "@mdi/js"
 export default {
     name:'ProductView',
     components:{AddProduct,EditProduct},
@@ -62,7 +67,8 @@ export default {
             data:[],
             page:1,
             limit:5,
-            productIdToUpdate:''
+            productIdToUpdate:'',
+            mdiTrashCanOutline,mdiTextBoxEditOutline
         }
     },
     created(){
@@ -71,9 +77,8 @@ export default {
     methods:{
         async getproduct(){
             try {
-                const res=await axios.get(`product/getAll?page=${this.page}&limit=${this.limit}`)
+                const res=await axios.get(`https://localhost:7224/product/getByPage?page=${this.page}&limit=${this.limit}`)
                 this.data=res.data
-                this.updateProduct()
             } catch (err) {
                 console.error(err)
             }

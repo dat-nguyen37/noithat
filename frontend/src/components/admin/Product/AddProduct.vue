@@ -1,26 +1,43 @@
 <template>
-    <div v-if="open"  class=" w-[100vh] h-[70vh] bg-white z-50 fixed top-[20vh] right-[50vh] shadow-2xl">
-        <div class="text-center relative">
-            <h1 class="uppercase font-bold text-xl bg-[#271511] text-white p-2">Add Product</h1>
-            <font-awesome-icon icon="close" @click="close" class="absolute top-0 right-0 p-3 text-xl hover:cursor-pointer text-white  hover:bg-red-500"/>
-        </div>
-        <div class="p-2">
-            <input type="text" name="name" v-model="name" placeholder="Name product" class="border-b w-full p-2 mb-2">
-            <select name="" id="" v-model="categoryId" class="w-full border-b p-2 mb-2">
-                <option selected value="">Choose category</option>
-                <option v-for="item in listCategory" :key="item._id" :value="item._id">{{ item.name }}</option>
-            </select>   
-            <input type="number" name="price" v-model="price" placeholder="Price" class="border-b p-2 mb-2">
-            <textarea name="description" v-model="description" id="" placeholder="Description" class="w-full p-2 mb-2 border-b" />
-            <div class="flex">
-                <label v-if="!image" for="file" class=""><font-awesome-icon icon="camera" class="p-6 border-2 text-2xl block hover:cursor-pointer"/></label>
-                <div v-else class="relative">
-                    <img :src="image" alt="" class="w-20 h-20 border-2 text-2xl block hover:cursor-pointer">
-                    <font-awesome-icon icon="close" @click="remove" class="absolute top-0 right-0 p-1 hover:cursor-pointer border bg-slate-100 rounded-[50%]"/>
+    <div v-if="open" class="fixed flex justify-center items-center z-20 inset-0 bg-black bg-opacity-50 h-[100vh] w-[100vw]" >
+        <div  class=" bg-white w-full md:w-1/2">
+            <div class="text-center relative">
+                <h1 class="uppercase font-bold text-xl bg-[#271511] text-white p-2">Add Product</h1>
+                <div @click="close">
+                    <VueIcon type="mdi" :path="mdiClose" size="30" class="absolute top-0 right-0 hover:cursor-pointer text-white  hover:bg-red-500"/>
                 </div>
-                    <input type="file" hidden id="file" name="image" @change="handleImageChange">
             </div>
-            <button class="float-end p-2 bg-blue-400 shadow-md z-10 rounded-md" @click="handleAdd">Add Product</button>
+            <div class="flex flex-col gap-5 p-5">
+                <input type="text" name="name" v-model="name" placeholder="Tên sản phẩm" class="border-b w-full p-2">
+                <div class="flex gap-5">
+                    <div>
+                        <label for="Price">Giá</label>
+                        <input type="number" id="Price" v-model="price" placeholder="Giá" class="border-b w-full p-2">
+                    </div>
+                    <div>
+                        <label for="Discounted">Ưu đãi %</label>
+                        <input type="number" id="Discounted" v-model="discounted" placeholder="Ưu đãi %" class="border-b w-full p-2">
+                    </div>
+                </div>
+                <textarea placeholder="Mô tả" v-model="description" class="border-b w-full p-2"/>
+                <div class="flex gap-5">
+                    <select name="" id="" v-model="categoryId" class="p-2 w-40 h-10 border outline-none">
+                        <option value="" selected>Danh mục</option>
+                        <option v-for="item in listCategory" :key="item.categoryId" :value="item.categoryId">{{ item.name }}</option>
+                    </select>
+                    <div class="flex">
+                        <label v-if="!image" for="file" class="w-10 h-10 md:w-20 md:h-20 border-2 flex justify-center items-center hover:cursor-pointer"><VueIcon type="mdi" :path="mdiCamera" class=""/></label>
+                        <div v-else class="relative">
+                            <img :src="image" alt="" class="w-10 h-10 md:w-20 md:h-20 border-2 text-2xl block hover:cursor-pointer">
+                            <div @click="remove">
+                                <VueIcon type="mdi" :path="mdiClose" class="absolute top-0 right-0 p-1 hover:cursor-pointer border bg-slate-100 rounded-[50%]"/>
+                            </div>
+                        </div>
+                            <input type="file" hidden id="file" name="image" @change="handleImageChange">
+                    </div>
+                </div>
+                <button @click="handleAdd" class="float-end p-2 bg-blue-400 shadow-md z-10 rounded-md">Add Product</button>
+            </div>
         </div>
     </div>
 </template>
@@ -28,18 +45,22 @@
 import {imgDb} from '../../../firebase'
 import { ref, uploadBytesResumable,getDownloadURL } from 'firebase/storage'
 import axios from 'axios'
+import { mdiCamera, mdiClose } from '@mdi/js';
 export default {
     name:"AddProduct",
-    props:['open'],
+    props:['open','getproduct'],
     data(){
         return{
             percent:0,
             image:'',
             name:'',
+            discounted:0,
             categoryId:'',
-            price:'',
+            price:0,
             description:'',
-            listCategory:[],
+            listCategory:"",
+            
+            mdiClose,mdiCamera
         }
     },
     created(){
@@ -56,7 +77,7 @@ export default {
             const file = event.target.files[0];
             if (!file) return;
             try {
-                const imgRef = ref(imgDb, `/ecommerce/${file.name}`);
+                const imgRef = ref(imgDb, `/product/${file.name}`);
                 const uploadTask = uploadBytesResumable(imgRef, file);
                 uploadTask.on(
                     "state_changed",
@@ -75,24 +96,26 @@ export default {
         },
         async getcategory(){
             try {
-                const res=await axios.get('category/getAll')
+                const res=await axios.get(`https://localhost:7224/Category/getAll`)
                 this.listCategory=res.data
             } catch (err) {
-                alert('Lỗi')
+                console.log(err)
             }
         },
         async handleAdd(){
             try {
-                await axios.post('product/create',{
+                await axios.post('https://localhost:7224/Product/create',{
                     name:this.name,
                     categoryId:this.categoryId,
                     price:this.price,
                     description:this.description,
-                    image:this.image
+                    image:this.image,
+                    discounted:this.discounted
                 })
+                this.getproduct()
                 alert("Add product successfully")
             } catch (err) {
-                alert('Lỗi')
+                console.log(err)
             }
         }
     }

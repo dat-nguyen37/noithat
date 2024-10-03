@@ -35,10 +35,23 @@
             </div>
             <div class="w-80 hidden md:flex">
                 <div class="flex items-center relative border-2 p-1 border-gray-100 w-80 h-10">
-                    <input type="text" placeholder="Tìm kiếm sản phẩm..." class="outline-none w-2/3">
-                    <a href="/search?q=njdf" class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
+                    <input type="text" v-model="searchValue" placeholder="Tìm kiếm sản phẩm..." class="outline-none w-2/3">
+                    <router-link :to="{name:'search',query:{q:searchValue}}" class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
                         <VueIcon type="mdi" :path="mdiMagnify" class="text-white"/>
-                    </a>
+                    </router-link>
+                    <div v-if="showSuggestions" class=" absolute top-10 bg-white max-h-80 overflow-x-auto w-full z-10 shadow-md rounded-sm">
+                        <div class="p-1 bg-gray-200 ">Sản phẩm gợi ý ({{ countItem }})</div>
+                        <div v-if="listSearch.length>0">
+                            <div v-for="i in listSearch" :key="i.productId" class="p-2 flex border-b">
+                                <div class=""><img :src="i.image" alt="" class="w-14 h-10"></div>
+                                <div class="flex flex-col mx-3">
+                                    <router-link class="text-sm" :to="{name:'productdetail',params:{id:i.productId}}">{{ i.name }}</router-link>
+                                    <p>{{i.discountedPrice ?? i.price | numeral}}₫ <s v-if="i.discountedPrice" class="">{{i.discountedPrice | numeral}}₫</s></p>
+                                </div>
+                            </div>
+                        </div>
+                        <p v-else class="p-2 text-center text-red-500">không tìm thấy sản phẩm</p>
+                    </div>
                 </div>
             </div>
             <div class="flex items-center gap-5">
@@ -131,10 +144,23 @@
         </div>
         <div class="w-full p-2">
             <div class="flex md:hidden items-center relative border-2 border-gray-100 w-full h-10">
-                <input type="text" placeholder="Tìm kiếm sản phẩm..." class="outline-none w-1/2">
-                <a href="/search?q=sds" class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
+                <input type="text" v-model="searchValue" placeholder="Tìm kiếm sản phẩm..." class="outline-none w-2/3">
+                <router-link :to="{name:'search',query:{q:searchValue}}" class="absolute right-0 bg-gray-700 h-10 w-10 flex justify-center items-center">
                     <VueIcon type="mdi" :path="mdiMagnify" class="text-white"/>
-                </a>
+                </router-link>
+                <div v-if="showSuggestions" class=" absolute top-10 bg-white max-h-80 overflow-x-auto w-full z-10 shadow-md rounded-sm">
+                    <div class="p-1 bg-gray-200 ">Sản phẩm gợi ý ({{ countItem }})</div>
+                    <div v-if="listSearch.length>0">
+                        <div v-for="i in listSearch" :key="i.productId" class="p-2 flex border-b">
+                            <div class=""><img :src="i.image" alt="" class="w-14 h-10"></div>
+                            <div class="flex flex-col mx-3">
+                                <router-link class="text-sm" :to="{name:'productdetail',params:{id:i.productId}}">{{ i.name }}</router-link>
+                                <p>{{i.discountedPrice ?? i.price | numeral}}₫ <s v-if="i.discountedPrice" class="">{{i.discountedPrice | numeral}}₫</s></p>
+                            </div>
+                        </div>
+                    </div>
+                    <p v-else class="p-2 text-center text-red-500">không tìm thấy sản phẩm</p>
+                </div>
             </div>
             <ul class="hidden lg:flex gap-5 px-10 text-sm">
                 <li v-for="items in category" :key="items.categoryTypeId" class="flex items-center py-4 relative group">
@@ -178,58 +204,78 @@ export default {
             loinPanel:true, 
             recoverPanel:'login',
             category:"",
+            searchValue:"",
+            listSearch:"",
+            countItem:0,
+            showSuggestions: false,
             mdiMagnify ,
             mdiAccountOutline,
             mdiChevronDown ,
             mdiShoppingOutline,mdiHeart,mdiViewHeadline,mdiChevronUp,mdiClose ,mdiChevronRight,mdiTrashCanOutline,
         };
-  },
-  mounted(){
+    },
+    mounted(){
         this.getCategory()
     },
-  methods:{
-    openMenu(){
-        this.menu=!this.menu
-        this.login=false
-        this.cart=false
+    watch: {
+        searchValue(newValue) {
+        this.showSuggestions = newValue !== '';
+        this.getproduct()
+        }
     },
-    toggleMenu(index) {
-      const menuIndex = this.openMenuIndexes.indexOf(index);
-      if (menuIndex > -1) {
-        // Nếu menu đã mở, đóng nó
-        this.openMenuIndexes.splice(menuIndex, 1);
-      } else {
-        // Nếu menu chưa mở, mở nó
-        this.openMenuIndexes.push(index);
-      }
-    },
-    isMenuOpen(index) {
-      // Kiểm tra xem menu có đang mở hay không
-      return this.openMenuIndexes.includes(index);
-    },
-    openLogin(){
-        this.login=!this.login
-        this.cart=false
-        this.menu=false
-    },
-    openLoginPanel(data){
-        this.recoverPanel=data
-    },
-    openRegisterPanel(data){
-        this.recoverPanel=data
-    },
-    openRecoverPanel(data){
-        this.recoverPanel=data
-    },
-    openCart(){
-        this.cart=!this.cart
-        this.login=false
-        this.menu=false
-    },
-    logout(){
-        this.$store.commit('LOGOUT')
-    },
-    async getCategory(){
+    methods:{
+        async getproduct(){
+            try {
+                const res=await axios.get(`https://localhost:7224/Product/search?q=${this.searchValue}`)
+                this.listSearch=res.data.products
+                this.countItem=res.data.total
+                
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        openMenu(){
+            this.menu=!this.menu
+            this.login=false
+            this.cart=false
+        },
+        toggleMenu(index) {
+        const menuIndex = this.openMenuIndexes.indexOf(index);
+        if (menuIndex > -1) {
+            // Nếu menu đã mở, đóng nó
+            this.openMenuIndexes.splice(menuIndex, 1);
+        } else {
+            // Nếu menu chưa mở, mở nó
+            this.openMenuIndexes.push(index);
+        }
+        },
+        isMenuOpen(index) {
+        // Kiểm tra xem menu có đang mở hay không
+        return this.openMenuIndexes.includes(index);
+        },
+        openLogin(){
+            this.login=!this.login
+            this.cart=false
+            this.menu=false
+        },
+        openLoginPanel(data){
+            this.recoverPanel=data
+        },
+        openRegisterPanel(data){
+            this.recoverPanel=data
+        },
+        openRecoverPanel(data){
+            this.recoverPanel=data
+        },
+        openCart(){
+            this.cart=!this.cart
+            this.login=false
+            this.menu=false
+        },
+        logout(){
+            this.$store.commit('LOGOUT')
+        },
+        async getCategory(){
             try {
                 const res=await axios.get("https://localhost:7224/CategoryType/getAll")
                 this.category=res.data

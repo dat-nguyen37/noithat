@@ -38,7 +38,10 @@ const store=new Vuex.Store({
     getters:{
         currentUser: state=>{
             return state.user
-        }
+        },
+        isAdmin(state) {
+            return state.user.role === 'Admin';
+          },
     }
 })
 

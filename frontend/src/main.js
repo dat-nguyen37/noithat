@@ -8,6 +8,7 @@ import vnMessage from './lang/vn.json'
 import enMessage from './lang/en.json'
 import store from '../src/store/store'
 import VueApexCharts from 'vue-apexcharts'
+import './axios'
 
 Vue.use(VueApexCharts)
 
