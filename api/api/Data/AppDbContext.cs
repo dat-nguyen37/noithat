@@ -16,6 +16,7 @@ namespace api.Data
         public DbSet<Color> colors { get; set; }
 
         public DbSet<Product> products { get; set; }
+        public DbSet<Cart> carts { get; set; }
         public DbSet<ProductImage> productImages { get; set; }
         public DbSet<ProductSize> productSizes { get; set; }
         public DbSet<Promotion> promotion { get; set; }
@@ -55,6 +56,10 @@ namespace api.Data
                 .HasMany(c=>c.UserPromotions)
                 .WithOne()
                 .HasForeignKey(p=>p.UserId);
+            modelBuilder.Entity<Cart>()
+                .HasOne(c=>c.Product)
+                .WithMany()
+                .HasForeignKey(p => p.ProductId);
         }
     }
 }

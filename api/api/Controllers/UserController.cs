@@ -3,6 +3,7 @@ using api.Dto;
 using api.MailUtils;
 using api.Models;
 using BCrypt.Net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

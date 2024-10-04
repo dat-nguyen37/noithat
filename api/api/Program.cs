@@ -12,7 +12,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowSpecificOrigin",
         builder =>
         {
-            builder.WithOrigins("http://localhost:8080")
+            builder.WithOrigins("https://noithat-fawn.vercel.app/")
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();

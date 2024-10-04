@@ -49,11 +49,11 @@
                             <p class="">Nhắn tin Fanpage: <a href=""><b class="text-white bg-blue-800 p-2">Nội thất moho</b></a></p>
                             <p class="">Gọi ngay Hotline:  <b class=" text-blue-800 p-2">0966544325(Zalo)</b></p>
                             <div class="flex border w-32 h-8 font-bold text-xl text-center items-center">
-                                <div class="bg-gray-100 w-8 cursor-pointer">-</div>
-                                <input type="text" class="w-16 text-center outline-none" value="1">
-                                <div class="bg-gray-100 w-8 cursor-pointer">+</div>
+                                <div @click="quantity>0 && quantity--" class="bg-gray-100 w-8 cursor-pointer">-</div>
+                                <input type="text" v-model="quantity" class="w-16 text-center outline-none" value="1">
+                                <div @click="quantity<10 && quantity++" class="bg-gray-100 w-8 cursor-pointer">+</div>
                             </div>
-                            <button class="font-bold text-white text-xl py-2 uppercase bg-blue-800">Thêm vào giỏ</button>
+                            <button @click="AddToCart" class="font-bold text-white text-xl py-2 uppercase bg-blue-800">Thêm vào giỏ</button>
                             <button class="font-bold text-white text-xl py-2 uppercase bg-red-500">Mua ngay</button>
                             <p class="text-sm text-gray-500">(+) Miễn phí giao hàng & lắp đặt tại tất cả quận huyện thuộc TP.HCM, Hà Nội, Khu đô thị Ecopark, Biên Hòa và một số quận thuộc Bình Dương (*)</p>
                             <p class="text-sm text-gray-500">(+) Miễn phí 1 đổi 1 - Bảo hành 2 năm - Bảo trì trọn đời (**)</p>
@@ -175,12 +175,12 @@ export default {
             selectedSize:"",
             price:0,
             discountedPrice:0,
-            discounted:""
+            discounted:"",
+            quantity:1
         }
     },
     mounted(){
         this.getProduct()
-        this.changeTotal()
     },
     watch:{
         "this.$route.params.id":function(newValue){
@@ -211,11 +211,16 @@ export default {
             try {
                 const res=await axios.get(`https://localhost:7224/Product/getOne/${this.productId}`)
                 this.product=res.data
+                this.price=res.data.price
+                this.discounted=res.data.discounted
+                this.discountedPrice=res.data.discountedPrice
                 this.colors=res.data.productColors
                 this.sizes=res.data.productSizes
-                this.selectedSize=res.data.productSizes[0].size.name
+                this.selectedSize=res.data.productSizes[0]?.size.name
                 this.getRelatedProducts()
-                this.changeTotal()
+                if(this.sizes.length>0){
+                    this.changeTotal()
+                }
             } catch (err) {
                 console.log(err)
             }
@@ -224,6 +229,23 @@ export default {
             try {
                 const res=await axios.get(`https://localhost:7224/Product/getByCategory/${this.product.category.categoryId}?page=1&limit=4`)
                 this.relatedProducts=res.data
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async AddToCart(){
+            try {
+                const res=await axios.post("https://localhost:7224/Cart/addCart",{
+                    productId:this.product.productId,
+                    quantity:this.quantity,
+                    size:this.selectedSize,
+                    color:this.selectedColor,
+                    totalAmount:this.discountedPrice ? this.discountedPrice * this.quantity : this.price * this.quantity
+                },{
+                headers: {
+                    'Authorization': `Bearer ${this.$store.state.user.token}`
+                }})
+                alert(res.data)
             } catch (err) {
                 console.log(err)
             }
