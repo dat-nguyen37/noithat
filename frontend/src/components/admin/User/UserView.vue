@@ -47,7 +47,7 @@ export default {
     methods:{
         async getuser(){
             try {
-                const res=await axios.get(`https://localhost:7224/User/getByPage?page=${this.page}&limit=${this.limit}`)
+                const res=await axios.get(`/User/getByPage?page=${this.page}&limit=${this.limit}`)
                 this.data=res.data
             } catch (err) {
                 console.log(err)

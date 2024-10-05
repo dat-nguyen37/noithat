@@ -53,7 +53,7 @@ export default {
     methods:{
         async getproduct(){
             try {
-                const res=await axios.get(`https://localhost:7224/Product/search?q=${this.searchValue}&page=${this.page}&limit=${this.limit}`)
+                const res=await axios.get(`/Product/search?q=${this.searchValue}&page=${this.page}&limit=${this.limit}`)
                 this.listSearch=res.data.products
                 this.countItem=res.data.total
             } catch (err) {

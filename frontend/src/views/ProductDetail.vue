@@ -25,7 +25,7 @@
                             </div>
                             <div class="flex gap-5 items-center">
                                 <div class="flex gap-2">
-                                    <p>Chia sẻ:</p>
+                                    <a :href="facebookShareUrl" target="_blank">Chia sẻ:</a>
                                     <VueIcon type="mdi" :path="mdiFacebook" size="30" class="text-blue-500 "/>
                                 </div>
                                 <p>Đã bán: {{ product.sell || 0 }}</p>
@@ -160,6 +160,7 @@ import ProductItem from '@/components/productItem/ProductItem.vue';
 import axios from 'axios';
 export default {
     name:"ProductDetail",
+    props:["getCart"],
     components:{ProductItem},
     data(){
         return{
@@ -176,11 +177,12 @@ export default {
             price:0,
             discountedPrice:0,
             discounted:"",
-            quantity:1
+            quantity:1,facebookShareUrl: ''
         }
     },
     mounted(){
         this.getProduct()
+        this.generateFacebookShareUrl(); 
     },
     watch:{
         "this.$route.params.id":function(newValue){
@@ -189,6 +191,10 @@ export default {
         }
     },
     methods:{
+        generateFacebookShareUrl() {
+            const productUrl = window.location.href;
+            this.facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
+         },
         remove(index) {
             this.image.splice(index, 1); 
             
@@ -209,7 +215,7 @@ export default {
         },
         async getProduct(){
             try {
-                const res=await axios.get(`https://localhost:7224/Product/getOne/${this.productId}`)
+                const res=await axios.get(`/Product/getOne/${this.productId}`)
                 this.product=res.data
                 this.price=res.data.price
                 this.discounted=res.data.discounted
@@ -227,7 +233,7 @@ export default {
         },
         async getRelatedProducts(){
             try {
-                const res=await axios.get(`https://localhost:7224/Product/getByCategory/${this.product.category.categoryId}?page=1&limit=4`)
+                const res=await axios.get(`/Product/getByCategory/${this.product.category.categoryId}?page=1&limit=4`)
                 this.relatedProducts=res.data
             } catch (err) {
                 console.log(err)
@@ -235,16 +241,14 @@ export default {
         },
         async AddToCart(){
             try {
-                const res=await axios.post("https://localhost:7224/Cart/addCart",{
+                const res=await axios.post("/Cart/addCart",{
                     productId:this.product.productId,
                     quantity:this.quantity,
                     size:this.selectedSize,
                     color:this.selectedColor,
                     totalAmount:this.discountedPrice ? this.discountedPrice * this.quantity : this.price * this.quantity
-                },{
-                headers: {
-                    'Authorization': `Bearer ${this.$store.state.user.token}`
-                }})
+                })
+                this.getCart()
                 alert(res.data)
             } catch (err) {
                 console.log(err)

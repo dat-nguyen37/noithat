@@ -29,7 +29,7 @@ export default {
         async Register(){
             this.$store.commit('LOGIN_START')
             try {
-                const res=await axios.post("https://localhost:7224/User/register",{email:this.email})
+                const res=await axios.post("/User/register",{email:this.email})
                 this.message=res.data
                 this.$store.commit('LOGIN_SUCCESS',)
             } catch (err) {

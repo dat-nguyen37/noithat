@@ -96,7 +96,7 @@ export default {
         },
         async getcategory(){
             try {
-                const res=await axios.get(`https://localhost:7224/Category/getAll`)
+                const res=await axios.get(`/Category/getAll`)
                 this.listCategory=res.data
             } catch (err) {
                 console.log(err)
@@ -104,7 +104,7 @@ export default {
         },
         async handleAdd(){
             try {
-                await axios.post('https://localhost:7224/Product/create',{
+                await axios.post('/Product/create',{
                     name:this.name,
                     categoryId:this.categoryId,
                     price:this.price,

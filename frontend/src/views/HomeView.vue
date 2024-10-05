@@ -25,7 +25,7 @@
             <div class="flex flex-col gap-2">
                 <h1 class="text-3xl font-medium">Mới nhất</h1>
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <ProductItem v-for="item in productNew" :key="item" :item="item"/>
+                    <ProductItem v-for="item in productNew" :key="item.productId" :item="item"/>
                 </div>
             </div>
             <!-- Sale -->
@@ -151,7 +151,7 @@ export default {
         },
         async getProductNew(){
             try {
-                const res=await axios.get("https://localhost:7224/Product/getNew")
+                const res=await axios.get("/Product/getNew")
                 this.productNew=res.data
             } catch (err) {
                 console.log(err)
@@ -159,7 +159,7 @@ export default {
         },
         async getProductDiscount(){
             try {
-                const res=await axios.get("https://localhost:7224/Product/getDiscount")
+                const res=await axios.get("/Product/getDiscount")
                 this.productDiscount=res.data
             } catch (err) {
                 console.log(err)

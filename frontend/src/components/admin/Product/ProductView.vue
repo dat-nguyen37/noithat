@@ -77,7 +77,7 @@ export default {
     methods:{
         async getproduct(){
             try {
-                const res=await axios.get(`https://localhost:7224/product/getByPage?page=${this.page}&limit=${this.limit}`)
+                const res=await axios.get(`/product/getByPage?page=${this.page}&limit=${this.limit}`)
                 this.data=res.data
             } catch (err) {
                 console.error(err)

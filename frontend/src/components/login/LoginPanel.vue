@@ -18,6 +18,7 @@ import axios from 'axios'
 import {mdiRotateRight} from '@mdi/js'
 export default {
     name:"LoginPanel",
+    props:["getCart"],
     data(){
         return{
             mdiRotateRight,
@@ -30,11 +31,12 @@ export default {
         async Login(){
             this.$store.commit('LOGIN_START')
             try {
-                const res=await axios.post("https://localhost:7224/User/login",{
+                const res=await axios.post("/User/login",{
                     email:this.email,
                     password:this.password
                 })
                 this.$store.commit('LOGIN_SUCCESS',res.data)
+                this.getCart()
                 if (this.$store.getters.isAdmin) {
                     this.$router.push('/admin');
                 }   

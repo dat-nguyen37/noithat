@@ -31,7 +31,7 @@
                 </ul>
             </div>
             <div class="col-span-4 justify-center">
-                <img src="/assets/image/logo.png" alt="" class=" w-40 h-8">
+                <a href="/"><img src="/assets/image/logo.png" alt="" class=" w-40 h-8"></a>
             </div>
             <div class="w-80 hidden md:flex">
                 <div class="flex items-center relative border-2 p-1 border-gray-100 w-80 h-10">
@@ -85,7 +85,7 @@
                                     <RegisterPanel @openLoginPanel="openLoginPanel"/>
                                 </div>
                                 <div class="w-[100vw]">
-                                    <LoginPanel @openRecoverPanel="openRecoverPanel" @openRegisterPanel="openRegisterPanel"/>
+                                    <LoginPanel @openRecoverPanel="openRecoverPanel" @openRegisterPanel="openRegisterPanel" :getCart="getCart"/>
                                 </div>
                                 <div class="w-[100vw]">
                                     <RecoverPanel @openLoginPanel="openLoginPanel"/>
@@ -97,41 +97,41 @@
                 <div class=" flex items-center justify-center gap-1 relative">
                     <div @click="openCart" class="relative cursor-pointer">
                         <a href="javascript:void(0)"><VueIcon type="mdi" :path="mdiShoppingOutline " size="30"/></a>
-                        <span class="absolute top-0 right-0 flex justify-center items-center w-4 h-4 rounded-full bg-orange-600 text-white">0</span>
+                        <span class="absolute top-0 right-0 flex justify-center items-center w-4 h-4 rounded-full bg-orange-600 text-white">{{ countCart }}</span>
                     </div>
                     <p @click="openCart" class="hidden lg:flex cursor-pointer">{{ $t('cart.header') }}</p>
                     <div id="cart" :class="cart ?'flex':'hidden'" class="absolute flex-col  top-14 p-2 text-sm w-screen -right-[70px] md:w-[24rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <p class="uppercase font-bold text-gray-500 py-2 border-b w-full">{{ $t('cart.header') }}</p>
-                        <div>
-                            <div class=" flex-col gap-2">
-                                <div class="flex gap-2 p-4 border-b">
-                                    <img src="/assets/image/New/new1.webp" alt="" class="w-16 h-16 object-cover">
-                                    <div class="flex flex-col justify-between">
-                                        <p class="text-sm">Giường Ngủ Gỗ MOHO VLINE 601 Nhiều Kích Thước</p>
-                                        <div class="flex items-center justify-around">
-                                            <p class="h-5 w-5 bg-gray-300">1</p>
-                                            <p class="font-bold">5,990,000 <s class="font-light">8,990,000</s></p>
+                        <div v-if="$store.state.user">
+                            <div v-if="carts" class="flex flex-col gap-2 h-60 overflow-y-auto">
+                                <div v-for="item in carts" :key="item.cartId" class="flex w-full gap-2 p-4 border-b">
+                                    <img :src="item.product.image" alt="" class="w-16 h-16 object-cover">
+                                    <div class="flex w-full flex-col justify-between">
+                                        <p class="text-sm">{{ item.product.name }}</p>
+                                        <div class="flex items-center justify-between">
+                                            <p class="h-5 w-5 bg-gray-300">{{ item.quantity }}</p>
+                                            <p class="font-bold">{{ item.totalAmount | numeral}} đ</p>
                                             <button><VueIcon type="mdi" :path="mdiTrashCanOutline" class="text-red-500"/></button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="hidden flex-col items-center py-2 border-b">
+                            <div v-else class="flex flex-col items-center py-2 border-b">
                                 <VueIcon type="mdi" :path="mdiShoppingOutline" size="50" class="self-center"/>
                                 <p>{{ $t('cart.description') }}</p>
                             </div>
-                        </div>
-                        <div class="p-4 flex flex-col gap-2">
-                            <div class="flex justify-between">
-                                <p class="uppercase">{{ $t('cart.total_Amount') }}:</p>
-                                <p class="text-red-500 font-bold">0 <u>đ</u></p>
+                            <div class="p-4 flex flex-col gap-2">
+                                <div class="flex justify-between">
+                                    <p class="uppercase">{{ $t('cart.total_Amount') }}:</p>
+                                    <p class="text-red-500 font-bold">{{ totalAmount | numeral}} <u>đ</u></p>
+                                </div>
+                                <div class="flex gap-2 justify-between text-white text-sm uppercase">
+                                    <a href="/cart" class="w-1/2 bg-gray-600 py-2">{{ $t('cart.buttons.show_cart') }}</a>
+                                    <a href="/checkout" class="w-1/2 bg-blue-800 py-2">{{ $t('cart.buttons.payment') }}</a>
+                                </div>
                             </div>
-                            <div class="flex gap-2 justify-between text-white text-sm uppercase">
-                                <a href="/cart" class="w-1/2 bg-gray-600 py-2">{{ $t('cart.buttons.show_cart') }}</a>
-                                <a href="/checkout" class="w-1/2 bg-blue-800 py-2">{{ $t('cart.buttons.payment') }}</a>
-                            </div>
                         </div>
-
+                        <div v-else class="p-2">Bạn chưa đăng nhập</div>
                     </div>
                 </div>
                 <div class=" flex ">
@@ -194,6 +194,7 @@ import RegisterPanel from '../register/RegisterPanel.vue';
 import axios from 'axios'
 export default {
     name:"NavBar",
+    props:['countCart',"getCart","carts","totalAmount"],
     components:{RecoverPanel,LoginPanel,RegisterPanel},
     data() {
         return {
@@ -226,7 +227,7 @@ export default {
     methods:{
         async getproduct(){
             try {
-                const res=await axios.get(`https://localhost:7224/Product/search?q=${this.searchValue}`)
+                const res=await axios.get(`/Product/search?q=${this.searchValue}`)
                 this.listSearch=res.data.products
                 this.countItem=res.data.total
                 
@@ -274,10 +275,11 @@ export default {
         },
         logout(){
             this.$store.commit('LOGOUT')
+            this.getCart()
         },
         async getCategory(){
             try {
-                const res=await axios.get("https://localhost:7224/CategoryType/getAll")
+                const res=await axios.get("/CategoryType/getAll")
                 this.category=res.data
             } catch (err) {
                 console.log(err)

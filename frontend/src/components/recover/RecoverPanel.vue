@@ -28,7 +28,7 @@ export default {
         },
         async recoverHandle(){
             try {
-                const res=await axios.post("https://localhost:7224/User/recover",{email:this.email})
+                const res=await axios.post("/User/recover",{email:this.email})
                 this.message=res.data
             } catch (err) {
                 this.message=err.response.data

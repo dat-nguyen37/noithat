@@ -84,7 +84,7 @@ export default {
         },
         async getCategoryType(){
             try {
-                const res=await axios.get("https://localhost:7224/CategoryType/getAll")
+                const res=await axios.get("/CategoryType/getAll")
                 this.categoryType=res.data
             } catch (err) {
                 console.log(err)
@@ -92,7 +92,7 @@ export default {
         },
         async AddCategory(){
             try {
-                await axios.post("https://localhost:7224/Category/create",{
+                await axios.post("/Category/create",{
                     name:this.name,
                     image:this.image,
                     categoryTypeId:this.categoryTypeId

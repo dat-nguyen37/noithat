@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="flex flex-col min-h-screen">
-    <NavBar v-if="!$route.meta.hideNavbar"/>
-    <router-view/>
+    <NavBar v-if="!$route.meta.hideNavbar" :countCart="countCart" :getCart="getCart" :carts="carts" :totalAmount="totalAmount"/>
+    <router-view :getCart="getCart"/>
     <div @click="openSetting" class="fixed right-4 bottom-24 flex justify-center items-center cursor-pointer">
       <VueIcon type="mdi" :path="mdiCog " class="animate-spin z-50  w-14 h-14 rounded-full bg-yellow-500"/>
       <div @click="scrollToTop()" :class="isSetting ? 'translate-y-0 opacity-100 duration-700' : 'translate-y-10 opacity-0 duration-100'" class="absolute transition-all -top-12 z-40">
@@ -22,6 +22,7 @@
 import NavBar from './components/navbar/NavBar.vue'
 import Footer from './components/footer/Footer.vue'
 import {mdiCog,mdiArrowUpBold,mdiHome,mdiMessageText,mdiChevronDownBoxOutline } from "@mdi/js"
+import axios from 'axios';
 export default {
   components:{
     NavBar,
@@ -31,8 +32,14 @@ export default {
     return{
       mdiCog,mdiArrowUpBold,mdiHome,mdiMessageText,mdiChevronDownBoxOutline,
       isSetting:false,
+      countCart:0,
+      totalAmount:0,
+      carts:""
     }
   },
+  mounted(){
+        this.getCart()
+    },
   methods:{
     scrollToTop(){
       window.scrollTo({top:0,behavior:"smooth"})
@@ -45,6 +52,19 @@ export default {
         this.$i18n.locale='en'
       }else{
         this.$i18n.locale='vn'
+      }
+    },
+    async getCart(){
+      try {
+        const res=await axios.get('/Cart/getCart')
+        this.countCart=res.data.carts.length
+        this.carts=res.data.carts
+        this.totalAmount=res.data.totalAmount
+      } catch (err) {
+        if (err.response && err.response.status === 401) {
+          this.countCart = 0;
+        }
+        console.error(err)
       }
     }
   }

@@ -155,7 +155,7 @@ export default {
         },
         async getProducts(){
             try {
-                const res=await axios.get(`https://localhost:7224/Product/getByCategory/${this.categoryId}?page=${this.page}&limit=${this.limit}&sort=${this.sort}&minPrice=${this.min}&maxPrice=${this.max}&size=${this.selectSize}&color=${this.selectColor}`)
+                const res=await axios.get(`/Product/getByCategory/${this.categoryId}?page=${this.page}&limit=${this.limit}&sort=${this.sort}&minPrice=${this.min}&maxPrice=${this.max}&size=${this.selectSize}&color=${this.selectColor}`)
                 this.products=res.data
             } catch (err) {
                 console.log(err)
@@ -163,7 +163,7 @@ export default {
         },
         async getColors(){
             try {
-                const res=await axios.get(`https://localhost:7224/Color/getAll`)
+                const res=await axios.get(`/Color/getAll`)
                 this.colors=res.data
             } catch (err) {
                 console.log(err)

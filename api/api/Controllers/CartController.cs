@@ -20,7 +20,7 @@ namespace Server.Controllers
             _context = context;
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost("addCart")]
         public async Task<IActionResult> AddCart([FromBody] CartDto cartDto)
         {
@@ -60,7 +60,27 @@ namespace Server.Controllers
 
             return Ok("Add to cart success");
         }
-        
+        [Authorize]
+        [HttpGet("getCart")]
+        public async Task<IActionResult> getCartByUser()
+        {
+            var userIdString = User.FindFirst("UserId")?.Value;
+            if (string.IsNullOrEmpty(userIdString))
+            {
+                return Unauthorized();
+            }
+            int userId = int.Parse(userIdString);
+            var carts = await _context.carts.Include(p => p.Product)
+                .Where(p => p.UserId == userId)
+                .ToListAsync();
+            var totalAmount = carts.Sum(p => p.TotalAmount);
+
+            return Ok(new
+            {
+                carts,
+                totalAmount
+            });
+        }
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> delete(int id)
         {

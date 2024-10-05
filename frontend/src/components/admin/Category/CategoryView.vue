@@ -49,7 +49,7 @@ export default {
     methods:{
         async getcategory(){
             try {
-                const res=await axios.get(`https://localhost:7224/Category/getByPage?page=${this.page}&limit=${this.limit}`)
+                const res=await axios.get(`/Category/getByPage?page=${this.page}&limit=${this.limit}`)
                 this.data=res.data
             } catch (err) {
                 console.log(err)
@@ -57,7 +57,7 @@ export default {
         },
         async handleDelete(id){
             try {
-                await axios.delete('https://localhost:7224/Category/delete/'+id)
+                await axios.delete('/Category/delete/'+id)
                 this.getcategory();
                 alert("Xóa thành công")
             } catch (err) {
