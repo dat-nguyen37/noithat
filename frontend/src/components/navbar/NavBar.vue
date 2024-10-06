@@ -1,7 +1,7 @@
 <template>
     <nav class="flex flex-col border-b">
         <div class="bg-blue-800 text-sm py-1 px-5 text-center text-white">Nội Thất MOHO miễn phí giao hàng & lắp đặt tại TP.HCM, Hà Nội, Biên Hòa và một số khu vực tại Bình Dương</div>
-        <div class="h-16 flex justify-between px-5 md:px-0 md:justify-around items-center gap-2">
+        <div class="h-16 flex justify-between px-5 md:px-0 md:justify-around items-center gap-2 ">
             <div @click="openMenu" class="flex lg:hidden relative items-center cursor-pointer">
                 <VueIcon type="mdi" :path="!menu ? mdiViewHeadline : mdiClose  " size="40"/>
                 <ul id="menu" :class="menu ? 'flex':'hidden'" class="absolute  flex-col font-bold bg-white w-[50vw] z-10 top-14 -left-5 shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
@@ -100,18 +100,22 @@
                         <span class="absolute top-0 right-0 flex justify-center items-center w-4 h-4 rounded-full bg-orange-600 text-white">{{ countCart }}</span>
                     </div>
                     <p @click="openCart" class="hidden lg:flex cursor-pointer">{{ $t('cart.header') }}</p>
-                    <div id="cart" :class="cart ?'flex':'hidden'" class="absolute flex-col  top-14 p-2 text-sm w-screen -right-[70px] md:w-[24rem] md:-right-20 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
+                    <div id="cart" :class="cart ?'flex':'hidden'" class="absolute flex-col  top-14 p-2 text-sm w-screen -right-[70px] md:w-[30rem] md:-right-16 z-20 bg-white text-center shadow-[0px_0px_2px_2px_rgba(0,0,0,0.3)]">
                         <p class="uppercase font-bold text-gray-500 py-2 border-b w-full">{{ $t('cart.header') }}</p>
                         <div v-if="$store.state.user">
-                            <div v-if="carts" class="flex flex-col gap-2 h-60 overflow-y-auto">
+                            <div v-if="carts" class="flex flex-col gap-2 max-h-60 overflow-y-auto">
                                 <div v-for="item in carts" :key="item.cartId" class="flex w-full gap-2 p-4 border-b">
                                     <img :src="item.product.image" alt="" class="w-16 h-16 object-cover">
                                     <div class="flex w-full flex-col justify-between">
                                         <p class="text-sm">{{ item.product.name }}</p>
+                                        <div class="flex justify-center gap-5 text-sm">
+                                            <p>{{ item.color }}</p>
+                                            <p>{{ item.size }}</p>
+                                        </div>
                                         <div class="flex items-center justify-between">
                                             <p class="h-5 w-5 bg-gray-300">{{ item.quantity }}</p>
                                             <p class="font-bold">{{ item.totalAmount | numeral}} đ</p>
-                                            <button><VueIcon type="mdi" :path="mdiTrashCanOutline" class="text-red-500"/></button>
+                                            <button @click="deleteCart(item.cartId)"><VueIcon type="mdi" :path="mdiTrashCanOutline" class="text-red-500"/></button>
                                         </div>
                                     </div>
                                 </div>
@@ -281,6 +285,15 @@ export default {
             try {
                 const res=await axios.get("/CategoryType/getAll")
                 this.category=res.data
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async deleteCart(id){
+            try {
+                await axios.delete(`/Cart/delete/${id}`)
+                alert("Xóa thành công")
+                this.getCart()
             } catch (err) {
                 console.log(err)
             }

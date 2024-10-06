@@ -33,7 +33,12 @@ export default {
                 this.message=res.data
                 this.$store.commit('LOGIN_SUCCESS',)
             } catch (err) {
-                this.message=err.response.data
+                if(err.response){
+                    this.message=err.response.data
+                }
+                else{
+                    this.message="Lỗi kết nối đến server"
+                }
                 this.$store.commit('LOGIN_FAILURE','')
             }
         },

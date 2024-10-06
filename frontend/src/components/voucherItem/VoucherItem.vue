@@ -10,14 +10,28 @@
         <div class="col-span-4 w-full relative overflow-hidden">
             <div class=" absolute w-4 h-4 rounded-full -top-2 -left-2 bg-white"></div>
             <div class=" absolute w-4 h-4 rounded-full -bottom-2 -left-2 bg-white"></div>
-            <div class="p-2 flex flex-col gap-2">
+            <div class="px-3 flex flex-col">
                 <div>
-                    <p class="text-sm font-bold">Giảm 200,000 đ</p>
-                    <p class="text-xs">Đơn hàng từ 3 triệu</p>
+                    <p class="text-sm font-bold">{{ item.name }}</p>
+                    <p class="text-xs">Giảm {{ item.discountRate }} % khi thanh toán</p>
                 </div>
                 <div class="flex justify-between items-center">
-                    <p class="text-[10px]">HSD: 30/09/2024</p>
-                    <div @click="copyToClipboard('vocher-200k')" class="text-xs p-1 bg-blue-500 text-white rounded-md cursor-pointer">{{voucherCode==='vocher-200k'? "Coppied":"Coppy"}}</div>
+                    <p class="text-[10px]">
+                        <span v-if="timeRemaining.daysRemaining > 0">
+                            Có hiệu lực sau {{ timeRemaining.daysRemaining }} ngày
+                        </span>
+                        <span v-else-if="timeRemaining.hoursRemaining >= 0">
+                            Có hiệu lực sau {{ timeRemaining.hoursRemaining }} giờ
+                        </span>
+                        <span v-else-if="timeRemaining.isExpired">
+                            Đã hết hiệu lực
+                        </span>
+                        <span v-else>
+                            <p v-if="timeRemaining.endDate">Có hiệu lực đến {{ formatDate(timeRemaining.endDate) }}</p>
+                            <p v-else>Có hiệu lực ngay bây giờ</p>
+                        </span>
+                    </p>
+                    <div @click="copyToClipboard(item.code)" :class="item.isActive ? 'bg-blue-500 text-white cursor-pointer':'bg-gray-100 text-gray-500'" class="text-xs p-1 rounded-md">{{voucherCode===item.code? "Coppied":"Coppy"}}</div>
                 </div>
             </div>
         </div> 
@@ -25,17 +39,41 @@
 </template>
 
 <script>
+import moment from 'moment';
 export default {
     name:"VoucherItem",
+    props:["item"],
     data(){
         return{
-            voucherCode:""
+            voucherCode:"",
         }
     },
     methods:{
+        formatDate(dateString) {
+            return moment(dateString).format('YYYY-MM-DD');
+        },
         async copyToClipboard(text) {
-            await navigator.clipboard.writeText(text);
-            this.voucherCode=text
+            if(this.item.isActive){
+                await navigator.clipboard.writeText(text);
+                this.voucherCode=text
+                setTimeout(() => {
+                    this.voucherCode = "";
+                }, 3000);
+            }
+        },
+    },
+    computed: {
+        timeRemaining() {
+        const currentDate = new Date();
+        const startDate = new Date(this.item.startDate); 
+        const endDate = new Date(this.item.endDate); 
+
+        const timeDifference = startDate - currentDate; 
+
+        const daysRemaining = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+        const hoursRemaining = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const isExpired=currentDate >= endDate;
+        return { daysRemaining, hoursRemaining, timeDifference, endDate, currentDate ,isExpired};
         },
     }
 }

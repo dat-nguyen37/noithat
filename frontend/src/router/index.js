@@ -97,13 +97,19 @@ const routes = [
       {
         path: '', 
         name: 'adminHome',
-        component: ()=> import('../components/chart/ChartView.vue'),
+        component: ()=> import('../components/admin/Home/HomeView.vue'),
         meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
       },
       {
         path: 'product',
         name: 'adminProduct', 
         component: ()=> import('../components/admin/Product/ProductView.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+      {
+        path: 'detail',
+        name: 'detail', 
+        component: ()=> import('../components/admin/Product/ViewProduct.vue'),
         meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
       },
       {
@@ -125,9 +131,15 @@ const routes = [
         meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
       },
       {
-        path: 'news',
-        name: 'adminNews', 
-        component:()=> import('../components/admin/News/NewsView.vue'),
+        path: 'imageCollection',
+        name: 'imageCollection', 
+        component:()=> import('../components/admin/Image/ImageCollection/ImageCollection.vue'),
+        meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
+      },
+      {
+        path: 'imageCollection/listImage/:id',
+        name: 'listImage', 
+        component:()=> import('../components/admin/Image/ListImage/ListImage.vue'),
         meta: { requiresAuth: true , hideNavbar: true , hideFooter: true },
       },
     ]

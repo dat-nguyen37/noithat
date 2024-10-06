@@ -1,6 +1,6 @@
 <template>
-    <div v-if="open" class="fixed flex justify-center items-center z-20 inset-0 bg-black bg-opacity-50 h-[100vh] w-[100vw]" >
-        <div  class=" bg-white w-full md:w-1/2">
+    <div v-if="open" class="fixed flex justify-center items-center z-20 inset-0 bg-black bg-opacity-50 h-[100vh] w-full" >
+        <div  class=" bg-white w-full mx-auto md:w-1/2">
             <div class="text-center relative">
                 <h1 class="uppercase font-bold text-xl bg-[#271511] text-white p-2">Add Category</h1>
                 <div @click="close">

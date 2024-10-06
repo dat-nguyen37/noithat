@@ -31,7 +31,12 @@ export default {
                 const res=await axios.post("/User/recover",{email:this.email})
                 this.message=res.data
             } catch (err) {
-                this.message=err.response.data
+                if(err.response){
+                    this.message=err.response.data
+                }
+                else{
+                    this.message="Lỗi kết nối đến server"
+                }
             }
         }
     }

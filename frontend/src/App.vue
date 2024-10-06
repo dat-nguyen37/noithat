@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="flex flex-col min-h-screen">
     <NavBar v-if="!$route.meta.hideNavbar" :countCart="countCart" :getCart="getCart" :carts="carts" :totalAmount="totalAmount"/>
-    <router-view :getCart="getCart"/>
+    <router-view :countCart="countCart" :getCart="getCart" :carts="carts" :totalAmount="totalAmount"/>
     <div @click="openSetting" class="fixed right-4 bottom-24 flex justify-center items-center cursor-pointer">
       <VueIcon type="mdi" :path="mdiCog " class="animate-spin z-50  w-14 h-14 rounded-full bg-yellow-500"/>
       <div @click="scrollToTop()" :class="isSetting ? 'translate-y-0 opacity-100 duration-700' : 'translate-y-10 opacity-0 duration-100'" class="absolute transition-all -top-12 z-40">

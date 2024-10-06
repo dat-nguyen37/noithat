@@ -41,7 +41,12 @@ export default {
                     this.$router.push('/admin');
                 }   
             } catch (err) {
-                this.message=err.response.data
+                if(err.response && err.response.data){
+                    this.message=err.response.data
+                }
+                else{
+                    this.message="Lỗi kết nối đến server"
+                }
                 this.$store.commit('LOGIN_FAILURE','')
             }
         },

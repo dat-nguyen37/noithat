@@ -3,9 +3,9 @@
         <div v-if="openVoucher" class="fixed flex justify-center items-center z-20 inset-0 bg-black bg-opacity-50 h-[100vh] w-[100vw]" >
             <div class=" w-80 bg-white relative">
                 <h1 class="p-2 border-b">Ưu đãi</h1>
-                <div class="flex flex-col gap-2 p-2 h-[calc(23rem-8px)] overflow-y-auto">
-                    <VoucherItem v-for="i in listVoucher" :key="i"/>
-                    <p v-if="listVoucher<=0">Bạn không có ưu đãi nào</p> 
+                <div class="flex flex-col gap-2 p-2 max-h-[calc(23rem-8px)] overflow-y-auto">
+                    <VoucherItem v-for="i in listVoucher" :key="i.promotionId" :item="i"/>
+                    <p v-if="listVoucher.length<=0">Bạn không có ưu đãi nào</p> 
                 </div>
                 <div @click="openVoucher=!openVoucher"><VueIcon type="mdi" :path="mdiClose" class="absolute top-0 right-0 cursor-pointer"/></div>
             </div>
@@ -19,101 +19,116 @@
                     <h1>Thông tin giao hàng</h1>
                     <div class="flex flex-col border p-2 relative rounded-lg">
                         <label for="name" :class="{
-                            'text-[10px] text-green-500 top-[5px]': isFocused || inputValue !== '', 
-                            'text-sm top-[20%] translate-y-1/3': !isFocused && inputValue === ''
+                            'text-[10px] text-green-500 top-[5px]': isFocusedName || name !== '', 
+                            'text-sm top-[20%] translate-y-1/3': !isFocusedName && name === ''
                         }" 
                         class="absolute left-[10px] transition-all duration-300">
                             Họ và tên
                         </label>
                         <input id="name" type="text" class="outline-none border-b-2 focus:border-blue-500 p-2"
-                                v-model="inputValue"
-                                @focus="isFocused = true"
-                                @blur="isFocused = inputValue !== ''">
+                                v-model="name"
+                                @focus="isFocusedName = true"
+                                @blur="isFocusedName = name !== ''">
                     </div>
                     <div class="flex flex-col border p-2 relative rounded-lg">
                         <label for="phone" :class="{
-                            'text-[10px] text-green-500 top-[5px]': isFocused || inputValue !== '', 
-                            'text-sm top-[20%] translate-y-1/3': !isFocused && inputValue === ''
+                            'text-[10px] text-green-500 top-[5px]': isFocusedPhone || phone !== '', 
+                            'text-sm top-[20%] translate-y-1/3': !isFocusedPhone && phone === ''
                         }" 
                         class="absolute left-[10px] transition-all duration-300">
                             Số điện thoại
                         </label>
                         <input id="phone" type="text" class="outline-none border-b-2 focus:border-blue-500 p-2"
-                                v-model="inputValue"
-                                @focus="isFocused = true"
-                                @blur="isFocused = inputValue !== ''">
+                                v-model="phone"
+                                @focus="isFocusedPhone = true"
+                                @blur="isFocusedPhone = phone !== ''">
+                    </div>
+                    <div class="flex flex-col border p-2 relative rounded-lg">
+                        <label for="address" :class="{
+                            'text-[10px] text-green-500 top-[5px]': isFocusedAddress || address !== '', 
+                            'text-sm top-[20%] translate-y-1/3': !isFocusedAddress && address === ''
+                        }" 
+                        class="absolute left-[10px] transition-all duration-300">
+                            Địa chỉ
+                        </label>
+                        <input id="address" type="text" class="outline-none border-b-2 focus:border-blue-500 p-2"
+                                v-model="address"
+                                @focus="isFocusedAddress = true"
+                                @blur="isFocusedAddress = address !== ''">
                     </div>
                     <div class="grid lg:grid-cols-3 gap-2">
                         <div class=" flex flex-col border p-2 relative rounded-lg">
                             <label :class="{
-                                'text-[10px] text-green-500 top-[5px]': inputValue !== '', 
-                                'text-sm top-[20%] translate-y-1/3 hidden': inputValue === ''
+                                'text-[10px] text-green-500 top-[5px]': city !== '', 
+                                'text-sm top-[20%] translate-y-1/3 hidden': city === ''
                             }" 
                             class="absolute left-[10px] transition-all duration-300">
                                 Tỉnh/ thành
                             </label>
                             <select name="" id="" class="outline-none text-sm border-b-2 focus:border-blue-500 p-2"
-                                    v-model="inputValue"
-                                    @blur="inputValue !== ''">
-                                <option value="">Chọn tỉnh/ thành</option>
-                                <option value="dss">dsds</option>
+                                    v-model="city"
+                                    @change="handleCityChange"
+                                    @blur="city !== ''">
+                                <option selected value="">Chọn tỉnh/ thành</option>
+                                <option v-for="c in cities" :key="c.Id" :value="c.Name">{{ c.Name }}</option>
                             </select>
                         </div>
                         <div class=" flex flex-col border p-2 relative rounded-lg">
                             <label :class="{
-                                'text-[10px] text-green-500 top-[5px]': inputValue !== '', 
-                                'text-sm top-[20%] translate-y-1/3 hidden': inputValue === ''
+                                'text-[10px] text-green-500 top-[5px]': district !== '', 
+                                'text-sm top-[20%] translate-y-1/3 hidden': district === ''
                             }" 
                             class="absolute left-[10px] transition-all duration-300">
-                                Tỉnh/ thành
+                                Quận/ huyện
                             </label>
                             <select name="" id="" class="outline-none border-b-2 text-sm focus:border-blue-500 p-2"
-                                    v-model="inputValue"
-                                    @blur="inputValue !== ''">
-                                <option value="">Chọn tỉnh/ thành</option>
-                                <option value="dss">dsds</option>
+                                    v-model="district"
+                                    @change="handleDistrictChange"
+                                    @blur="district !== ''">
+                                <option selected value="">Chọn quận/ huyện</option>
+                                <option v-for="d in districts" :key="d.Id" :value="d.Name">{{ d.Name }}</option>
                             </select>
                         </div>
                         <div class=" flex flex-col border p-2 relative rounded-lg">
                             <label :class="{
-                                'text-[10px] text-green-500 top-[5px]': inputValue !== '', 
-                                'text-sm top-[20%] translate-y-1/3 hidden': inputValue === ''
+                                'text-[10px] text-green-500 top-[5px]': ward !== '', 
+                                'text-sm top-[20%] translate-y-1/3 hidden': ward === ''
                             }" 
                             class="absolute left-[10px] transition-all duration-300">
-                                Tỉnh/ thành
+                                Phường/ xã
                             </label>
                             <select name="" id="" class="outline-none text-sm border-b-2 focus:border-blue-500 p-2"
-                                    v-model="inputValue"
-                                    @blur="inputValue !== ''">
-                                <option value="">Chọn tỉnh/ thành</option>
-                                <option value="dss">dsds</option>
+                                    v-model="ward"
+                                    @blur="ward !== ''">
+                                <option selected value="">Chọn phường/ xã</option>
+                                <option v-for="w in wards" :key="w.Id" :value="w.Name">{{ w.Name }}</option>
                             </select>
                         </div>
                     </div>
                     <div class="border p-2 relative rounded-lg">
                             <label for="description" :class="{
-                                'text-[10px] text-green-500 top-[5px]': isFocused || inputValue !== '', 
-                                'text-sm top-[20%] translate-y-1/4': !isFocused && inputValue == ''
+                                'text-[10px] text-green-500 top-[5px]': isFocusedDescription || description !== '', 
+                                'text-sm top-[20%] translate-y-1/4': !isFocusedDescription && description == ''
                             }" 
                             class="absolute left-[10px] transition-all duration-300">
                                 Viết gì đó ...
                             </label>
                             <textarea id="description" class="w-full outline-none border-b-2 focus:border-blue-500 p-2"
-                                v-model="inputValue"
-                                @focus="isFocused = true"
-                                @blur="isFocused = inputValue !== ''"/>
+                                v-model="description"
+                                @focus="isFocusedDescription = true"
+                                @blur="isFocusedDescription = description !== ''"/>
                         </div>
                     <div class="flex flex-col gap-2">
                         <h1 class="sm:text-xl">Phương thức thanh toán</h1>
                         <div class="border flex flex-col text-xs sm:text-sm text-gray-500">
                             <div class="flex items-center gap-2 border-b p-4">
-                                <input type="radio" name="" id="" class="w-5 h-5">
+                                <input type="radio" name="payment" @change="changePayment" value="COD" class="w-5 h-5">
                                 <label for="" class="flex items-center gap-2">
                                     <img src="https://hstatic.net/0/0/global/design/seller/image/payment/cod.svg?v=6" width="40" height="40" alt="">
                                     Thanh toán tiền mặt khi giao hàng (COD)</label>
                             </div>
                             <div class="flex items-center gap-2 border-b p-4">
-                                <input type="radio" name="" id="" class="w-5 h-5">
+                                <input type="radio" name="payment" @change="changePayment" value="VNPAY" class="w-5 h-5">
                                 <label for="" class="flex items-center gap-2">
                                     <img src="https://hstatic.net/0/0/global/design/seller/image/payment/vnpay_new.svg?v=6" width="40" height="40" alt="">
                                     Thanh toán online qua cổng VNPay (ATM/Visa/MasterCard/JCB/QR Pay trên Internet Banking)</label>
@@ -132,37 +147,40 @@
                             <p class="text-sm">Hiển thị thông tin đơn hàng</p>
                             <VueIcon type="mdi" :path="mdiChevronDown"/>
                         </div>
-                        <p class="">11,890,000₫</p>
+                        <p class="">{{price | numeral}}₫</p>
                     </div>
-                    <div :class="{'hidden lg:flex flex-col py-4 border-b border-black': !orderSumary, 'flex flex-col py-4 border-b border-black': orderSumary}">
-                        <div class="flex gap-2">
-                            <div class="min-w-12 min-h-12 relative">
-                                <img src="/assets/image/New/new1.webp" alt="" class="w-12 h-12 rounded-lg border border-black">
-                                <span class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-500 flex justify-center items-center text-white">1</span>
+                    <div :class="{'hidden lg:flex flex-col gap-2 py-4 border-b border-black': !orderSumary, 'flex flex-col gap-2 py-4 border-b border-black': orderSumary}">
+                        <div v-for="item in carts" :key="item.cartId" class="flex gap-2">
+                            <div class="w-12 h-12 relative">
+                                <img :src="item.product.image" alt="" class="w-12 h-12 rounded-lg border border-black">
+                                <span class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-gray-500 flex justify-center items-center text-white">{{ item.quantity }}</span>
                             </div>
-                            <div class=" flex flex-col gap-2 text-gray-500 self-center">
-                                <p class="text-xs sm:text-sm">Hệ tủ bếp MOHO Kitchen Premium Ubeda Nhiều Kích Thước</p>
-                                <p class="text-xs sm:text-sm">1m5</p>
+                            <div class=" flex flex-col gap-2 text-gray-500 w-[70%]">
+                                <p class="text-xs sm:text-sm">{{ item.product.name }}</p>
+                                <div class="flex gap-5">
+                                    <p class="text-xs sm:text-sm">{{ item.color }}</p>
+                                    <p class="text-xs sm:text-sm">{{ item.size }}</p>
+                                </div>
                             </div>
-                            <p class=" self-center text-xs sm:text-sm">11,890,000₫</p>
+                            <p class=" text-xs sm:text-sm">{{item.totalAmount | numeral}}₫</p>
                         </div>
                     </div>
                     <div class="flex flex-col gap-3 py-4 border-b border-black">
                         <div class="flex justify-between">
                             <div class="flex flex-col w-2/3 relative rounded-lg">
                             <label :class="{
-                                'text-[10px] text-green-500 top-0 ': inputValue !== '', 
-                                'text-sm top-[10%] translate-y-1/3 hidden': inputValue === ''
+                                'text-[10px] text-green-500 top-0 ': voucher !== '', 
+                                'text-sm top-[10%] translate-y-1/3 hidden': voucher === ''
                                 }" 
                                 class="absolute left-[10px] transition-all duration-500">
                                 Mã giảm giá
                             </label>
                             <input type="text" placeholder="Mã giảm giá" class="outline-none focus:border-blue-500 p-2"
-                                    v-model="inputValue"
-                                    @focus="isFocused = true"
-                                    @blur="isFocused = inputValue !== ''">
+                                    v-model="voucher"
+                                    @focus="isFocusedVoucher = true"
+                                    @blur="isFocusedVoucher = voucher !== ''">
                             </div>
-                            <button class="text-white bg-gray-500 rounded-lg p-2 text-sm">Sử dụng</button>
+                            <button @click="ApplyVoucher" class="text-white bg-gray-500 rounded-lg p-2 text-sm">Sử dụng</button>
                         </div>
                         <div @click="openVoucher='true'" class="flex gap-2 w-24 cursor-pointer">
                             <VueIcon type="mdi" :path="mdiTicketPercent" class="text-blue-500"/>
@@ -172,19 +190,15 @@
                     <div :class="{'hidden lg:flex flex-col py-4': !orderSumary, 'flex flex-col py-4': orderSumary}">
                         <div class="flex justify-between text-gray-500 border-black">
                             <p>Tạm tính</p>
-                            <p>11,890,000₫</p>
-                        </div>
-                        <div class="flex justify-between text-gray-500">
-                            <p>Phí vận chuyển</p>
-                            <p>- 1,000,000₫</p>
+                            <p>{{totalAmount | numeral}}₫</p>
                         </div>
                         <div class="flex justify-between text-gray-500 pb-2">
                             <p>Ưu đãi</p>
-                            <p>- 1,000,000₫</p>
+                            <p>- {{discountPrice | numeral}}₫</p>
                         </div>
                         <div class="flex justify-between text-gray-500 pt-2 border-t border-black">
                             <p class="text-black">Tổng cộng</p>
-                            <p class="text-xl"> 10,890,000₫</p>
+                            <p class="text-xl"> {{!discountPrice ? totalAmount : price | numeral}}₫</p>
                         </div>
                     </div>
                 </div>
@@ -196,18 +210,89 @@
 <script>
 import {mdiCartOutline, mdiChevronDown, mdiClose, mdiTicketPercent} from '@mdi/js'
 import VoucherItem from '@/components/voucherItem/VoucherItem.vue';
+import axios from 'axios';
 export default {
     name:"CheckoutView",
+    props:["carts","totalAmount"],
     components:{VoucherItem},
     data() {
         return {
             mdiCartOutline,mdiChevronDown,mdiTicketPercent,mdiClose,
-            isFocused: false,
-            inputValue: '',
+            isFocusedName: false,
+            isFocusedPhone: false,
+            isFocusedAddress: false,
+            isFocusedDescription: false,
+            isFocusedVoucher: false,
+            isFocusedCity: false,
+            isFocusedDistrict: false,
+            isFocusedWart: false,
             orderSumary:false,
-            listVoucher:7,
-            openVoucher:false
+            listVoucher:"",
+            openVoucher:false,
+            price:0,
+            discountPrice:0,
+            name:'',
+            phone:'',
+            description:'',
+            paymentMethod:'',
+            address:'',
+            voucher:'',
+            city:'',
+            district:'',
+            ward:'',
+            cities:'',
+            districts:'',
+            wards:''
+
         }
+    },
+    mounted(){
+        this.getVoucher()
+        this.getCities()
+    },
+    methods:{
+        async getVoucher(){
+            try {
+                const res=await axios.get("/Promotion/getAll")
+                this.listVoucher=res.data
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        ApplyVoucher(){
+            const voucher=this.listVoucher.find(v=>v.code===this.voucher)
+            if(voucher && voucher.isActive){
+                this.discountPrice=(this.totalAmount*voucher.discountRate)/100
+                this.price=this.totalAmount -this.discountPrice 
+            }
+        },
+        changePayment(e){
+            this.paymentMethod=e.target.value
+            console.log(this.paymentMethod)
+        },
+        async getCities(){
+           try {
+            const response= await fetch("https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json")
+            const data = await response.json();
+            this.cities=data
+           } catch (err) {
+            console.error(err)
+           }
+        },
+        handleCityChange(e){
+            const selectedCityName = e.target.value;
+            const selectedCity = this.cities.find(city => city.Name === selectedCityName);
+            if (selectedCity) {
+            this.districts=selectedCity.Districts;
+            }
+        },
+         handleDistrictChange (e)  {
+            const selectedDistrictName = e.target.value;
+            const selectedDistrict = this.districts.find(district => district.Name === selectedDistrictName);
+            if (selectedDistrict) {
+            this.wards=selectedDistrict.Wards;
+            }
+        },
     }
 }
 </script>

@@ -1,23 +1,35 @@
 <template>
     <div class=" mt-2 relative">
-        <div class="flex justify-between px-4">
-            <h1 class="font-bold uppercase">Product</h1>
-            <button class="bg-blue-400 p-2 rounded-sm z-10 shadow-lg" @click="handleAdd">Add product</button>
+        <div class="flex items-center gap-2 p-2">
+            <router-link :to="{name:'adminHome'}">Home:</router-link>
+            <VueIcon type="mdi" :path="mdiChevronRight"/>
+            <p class="text-sm">Sản phẩm</p>
         </div>
-        <div class="bg-white shadow-lg mt-1">
+        <div class="flex flex-col gap-5 bg-white shadow-lg mt-1 p-4">
+            <div class="flex justify-between">
+                <select name="" v-model="categoryId" class="p-1 outline-none border">
+                    <option value="">Tất cả</option>
+                    <option v-for="item in categorys" :key="item.categoryId" :value="item.categoryId">{{ item.name }}</option>
+                </select>
+                <div @click="handleAdd" class="text-blue-500 flex items-center gap-2 bg-blue-100 p-1 text-sm cursor-pointer">
+                    <VueIcon type="mdi" :path="mdiCogOutline" size="15"/>
+                    Thêm mặt hàng
+                </div>
+            </div>
             <table class="w-full">
                 <thead class="border">
                     <tr class="bg-gray-400">
-                        <th scope="col" class="border">Name</th>
-                        <th scope="col" class="border">Price</th>
-                        <th scope="col" class="border">Image</th>
-                        <th scope="col" class="border">Action</th>
+                        <th scope="col" class="border">Tên mặt hàng</th>
+                        <th scope="col" class="border">Ảnh</th>
+                        <th scope="col" class="border">Giá bán</th>
+                        <th scope="col" class="border">Đánh giá</th>
+                        <th scope="col" class="border">Đã bán</th>
+                        <th scope="col" class="border">Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="item in data" :key="item._id">
-                        <td scope="col" class="border text-center">{{item.name}}</td>
-                        <td scope="col" class="border text-center">{{ item.price }}</td>
+                    <tr v-for="item in data" :key="item._id" class="text-sm">
+                        <td scope="col" class="border p-2">{{item.name}}</td>
                         <td scope="col" class="border text-center">
                             <div class="flex justify-center" v-viewer>
                                 <img :src="item.image" class="w-10 h-10" alt="">
@@ -26,13 +38,19 @@
                                 <img :src="src">
                             </viewer>
                         </td>
+                        <td scope="col" class="border text-center">{{ item.price | numeral}}</td>
+                        <td scope="col" class="border text-center">{{ item.averageRate }}</td>
+                        <td scope="col" class="border text-center">{{ item.sell || 0}}</td>
                         <td scope="col" class="border text-center">
-                            <div class="flex items-center justify-center gap-2">
-                                <div>
-                                    <VueIcon type="mdi" :path="mdiTextBoxEditOutline" class="text-blue-500 hover:cursor-pointer" />
+                            <div class="flex items-center justify-center text-white">
+                                <div @click="handleUpdate"  class="p-1 bg-blue-500 rounded-lg">
+                                    <VueIcon type="mdi" :path="mdiEyedropperVariant" class=" hover:cursor-pointer" size="20"/>
                                 </div>
-                                <div @click="handleDelete(item.categoryId)">
-                                    <VueIcon type="mdi" :path="mdiTrashCanOutline"  class="text-red-500 hover:cursor-pointer"/>
+                                <router-link :to="{name:'detail',query:{msp:item.productId}}" class="p-1 bg-yellow-500 rounded-lg">
+                                    <VueIcon type="mdi" :path="mdiEyeOutline"  class=" hover:cursor-pointer" size="20"/>
+                                </router-link>
+                                <div @click="handleDelete(item.categoryId)" class="p-1 bg-red-500 rounded-lg">
+                                    <VueIcon type="mdi" :path="mdiTrashCanOutline"  class=" hover:cursor-pointer" size="20"/>
                                 </div>
                             </div>
                         </td>
@@ -55,7 +73,8 @@ import AddProduct from './AddProduct.vue'
 import EditProduct from './EditProduct.vue'
 
 import axios from 'axios'
-import {mdiTrashCanOutline,mdiTextBoxEditOutline} from "@mdi/js"
+import {mdiTrashCanOutline,mdiEyedropperVariant, mdiChevronRight, mdiCogOutline,mdiEyeOutline} from "@mdi/js"
+import {   } from '@mdi/js';
 export default {
     name:'ProductView',
     components:{AddProduct,EditProduct},
@@ -68,11 +87,23 @@ export default {
             page:1,
             limit:5,
             productIdToUpdate:'',
-            mdiTrashCanOutline,mdiTextBoxEditOutline
+            mdiTrashCanOutline,mdiEyedropperVariant,mdiChevronRight,mdiCogOutline,mdiEyeOutline,
+            categorys:"",
+            categoryId:""
         }
     },
-    created(){
+    mounted(){
         this.getproduct()
+        this.getcategory()
+    },
+    watch:{
+        "categoryId":function(){
+            if(this.categoryId==""){
+                this.getproduct()
+            }else{
+                this.filter()
+            }
+        }
     },
     methods:{
         async getproduct(){
@@ -114,6 +145,22 @@ export default {
         async nextPage() {
             this.page++;
             await this.getproduct();
+        },
+        async getcategory(){
+            try {
+                const res=await axios.get(`/Category/getAll`)
+                this.categorys=res.data
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async filter(){
+            try {
+                const res=await axios.get(`/Product/getByCategory/${this.categoryId}`)
+                this.data=res.data.product
+            } catch (err) {
+                console.log(err)
+            }
         }
     }
 }

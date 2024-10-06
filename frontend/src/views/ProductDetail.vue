@@ -7,12 +7,9 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="relative">
                     <div class="w-full flex flex-col gap-2 sticky top-1">
-                    <img :src="product.image" alt="" class="max-w-full h-auto">
+                    <img :src="selectedImage ? selectedImage : product.image" alt="" class="max-w-full h-[70vh]">
                     <div class="flex flex-wrap gap-3">
-                        <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
-                        <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
-                        <img src="/assets/image/New/new1.webp" alt="" class="w-14 h-14">
-
+                        <img v-for="image in product.productImages" @click="selectedImage=image.imageUrl" :key="image.productImageId" :src="image.imageUrl" alt="" class="w-14 h-14 border-2">
                     </div>
                 </div>
                 </div>
@@ -21,7 +18,13 @@
                     <div class="flex flex-col">
                         <div class="flex justify-between border-b pb-5">
                             <div class="flex items-center">
-                                <VueIcon v-for="i in 5" :key="i" type="mdi" :path="mdiStar" size="20"/> (1)
+                                <star-rating v-model="listComments.averageRate"
+                                :star-size="20" 
+                                :show-rating="false"
+                                :increment="0.1" 
+                                :read-only="true" 
+                                :fixed-points="1"/>                          
+                                ({{ listComments.count }})
                             </div>
                             <div class="flex gap-5 items-center">
                                 <div class="flex gap-2">
@@ -66,7 +69,7 @@
             <div class="flex flex-col w-full border">
                 <div class="w-full h-auto bg-gray-100 flex items-center">
                     <div @click="CurrentTab = 'tab1'" :class="{'bg-gray-300': CurrentTab === 'tab1'}" class="p-2 hover:bg-gray-200 cursor-pointer">Mô tả</div>
-                    <div @click="CurrentTab = 'tab2'" :class="{'bg-gray-300': CurrentTab === 'tab2'}" class="p-2 hover:bg-gray-200 cursor-pointer">Đánh giá (67)</div>
+                    <div @click="CurrentTab = 'tab2'" :class="{'bg-gray-300': CurrentTab === 'tab2'}" class="p-2 hover:bg-gray-200 cursor-pointer">Đánh giá ({{ listComments.count }})</div>
                     <div @click="CurrentTab = 'tab3'" :class="{'bg-gray-300': CurrentTab === 'tab3'}" class="p-2 hover:bg-gray-200 cursor-pointer">Chính sách</div>
                 </div>
                 <div v-if="CurrentTab === 'tab1'" class="flex p-2">
@@ -75,55 +78,60 @@
                 <div v-if="CurrentTab === 'tab2'"  class="flex w-full p-2">
                     <div class="flex flex-col gap-2 w-full">
                         <div class="flex items-center">
-                            <VueIcon v-for="i in 5" :key="i" type="mdi" :path="mdiStar" size="20"/>
-                            (5.0)
+                            <star-rating v-model="listComments.averageRate"
+                            :star-size="20" 
+                            :show-rating="false"
+                            :increment="0.1" 
+                            :read-only="true" 
+                            :fixed-points="1"/>                          
+                            ({{ listComments.averageRate }})
                         </div>
                         <div class="flex flex-col gap-2">
                             <div class="flex items-center gap-5">
                                 <h1 class="font-bold">Viết đánh giá</h1>
-                                <select name="" id="" class="border-2 w-40 p-1">
-                                    <option value="">1sao</option>
-                                    <option value="">2sao</option>
-                                    <option value="">3sao</option>
-                                    <option value="">4sao</option>
-                                    <option value="">5sao</option>
+                                <select name="" v-model="commentRate" class="border-2 w-40 p-1">
+                                    <option value="1">1sao</option>
+                                    <option value="2">2sao</option>
+                                    <option value="3">3sao</option>
+                                    <option value="4">4sao</option>
+                                    <option value="5">5sao</option>
                                 </select>
                             </div>
-                            <textarea class="border outline-none p-2" placeholder="Viết gì đó ..."/>
+                            <textarea v-model="commentText" class="border outline-none p-2" placeholder="Viết gì đó ..."/>
                             <div class="flex bottom-2 overflow-x-auto justify-between">
                                 <div class=" flex flex-wrap">
-                                    <label for="file" class="w-10 h-10 md:w-20 md:h-20 border-2 flex justify-center items-center hover:cursor-pointer"><VueIcon type="mdi" :path="mdiCamera" class=""/></label>
-                                    <div v-if="image" class="flex">
-                                        <div v-for="(img,index) in image" :key="index" class="relative">
-                                            <img :src="img" alt="" class="w-10 h-10 md:w-20 md:h-20 border-2 text-2xl block hover:cursor-pointer">
-                                            <VueIcon type="mdi" :path="mdiClose" @click="remove(index)" class="absolute top-0 right-0 p-1 hover:cursor-pointer border bg-slate-100 rounded-[50%]"/>
+                                    <label v-if="!commentImage" for="file" class="w-10 h-10 md:w-20 md:h-20 border-2 flex justify-center items-center hover:cursor-pointer"><VueIcon type="mdi" :path="mdiCamera" class=""/></label>
+                                    <div v-else class="flex">
+                                        <div class="relative">
+                                            <img :src="commentImage" alt="" class="w-10 h-10 md:w-20 md:h-20 border-2 text-2xl block hover:cursor-pointer">
+                                            <button type="button" @click="remove()"><VueIcon type="mdi" :path="mdiClose" class="absolute top-0 right-0 p-1 hover:cursor-pointer border bg-slate-100 rounded-[50%]"/></button>
                                         </div>
                                     </div>
                                 </div>
                                 <input type="file" hidden id="file" name="image" @change="handleImageChange">
-                                <button type="button" class="p-2 border bg-blue-500 text-white self-center rounded-sm">Send</button>
+                                <button @click="Comment" type="button" class="p-2 border bg-blue-500 text-white self-center rounded-sm">Send</button>
                             </div>
                         </div>
                         <div class=' mt-3 border-4 border-black h-[105vh] p-2 relative'>
-                            <h1 class="text-sm md:text-base">Bình luận (10)</h1>
+                            <h1 class="text-sm md:text-base">Bình luận ({{ listComments.count }})</h1>
                             <div class="h-[90vh] overflow-y-auto">
-                                <div class='border-b'>
+                                <div v-for="item in listComments.comments" :key="item.commentId" class='border-b'>
                                 <div class='flex mt-3 items-center gap-3'>
                                     <div class="border w-10 h-10 rounded-[50%]" >
                                         <img src="/assets/image/New/new1.webp" alt="" class='rounded-[50%]'/> 
                                     </div>
                                     <div class=' flex flex-col'>
-                                        <p class="text-sm md:text-md">Dat Nguyen</p>
+                                        <p class="text-sm md:text-md">{{ item.user.email }}</p>
                                         <div class="flex">
-                                            <VueIcon v-for="i in 5" :key="i" type="mdi" :path="mdiStar" size="15" class=" text-yellow-300"/>
+                                            <VueIcon v-for="i in item.rate" :key="i" type="mdi" :path="mdiStar" size="15" class=" text-yellow-300"/>
                                         </div>
-                                        <p class="text-[10px]">11-11-2024</p>
+                                        <p class="text-[10px]">{{ item.createdDate }}</p>
                                     </div>
                                 </div>
                                 <div class='my-2 px-2'>
-                                    <span class="text-xs sm:text-base">qua tuyet voi</span>
-                                    <div class="flex gap-3">
-                                        <img v-for="src in image" :key="src" :src="src" class="w-10 h-10 sm:w-20 sm:h-20">
+                                    <span class="text-xs sm:text-base">{{ item.commentText }}</span>
+                                    <div v-if="item.imageUrl" class="flex gap-3">
+                                        <img :src="item.imageUrl" class="w-10 h-10 sm:w-20 sm:h-20">
                                     </div>
                                 </div>
                             </div>
@@ -155,13 +163,16 @@
 </template>
 
 <script>
-import { mdiFacebook, mdiStar,mdiCheck, mdiClose, mdiCamera } from '@mdi/js';
+import { mdiFacebook, mdiStar,mdiCheck, mdiClose, mdiCamera  } from '@mdi/js';
 import ProductItem from '@/components/productItem/ProductItem.vue';
 import axios from 'axios';
+import {imgDb} from '../firebase'
+import { ref, uploadBytesResumable,getDownloadURL } from 'firebase/storage'
+import StarRating from 'vue-star-rating';
 export default {
     name:"ProductDetail",
     props:["getCart"],
-    components:{ProductItem},
+    components:{ProductItem,StarRating},
     data(){
         return{
             mdiStar,mdiFacebook,mdiCheck,mdiClose,mdiCamera,
@@ -177,12 +188,19 @@ export default {
             price:0,
             discountedPrice:0,
             discounted:"",
-            quantity:1,facebookShareUrl: ''
+            quantity:1,
+            facebookShareUrl: '',
+            selectedImage:"",
+            commentText:"",
+            commentRate:5,
+            commentImage:"",
+            listComments:""
         }
     },
     mounted(){
         this.getProduct()
         this.generateFacebookShareUrl(); 
+        this.getComment()
     },
     watch:{
         "this.$route.params.id":function(newValue){
@@ -191,17 +209,14 @@ export default {
         }
     },
     methods:{
+        
         generateFacebookShareUrl() {
             const productUrl = window.location.href;
             this.facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(productUrl)}`;
          },
-        remove(index) {
-            this.image.splice(index, 1); 
+        remove() {
+            this.remove=""; 
             
-        },
-        async handleImageChange(event) {
-            const file = event.target.files[0];
-            this.image.push(file.name);
         },
         handleSelectedSize(name){
             this.selectedSize=name
@@ -252,6 +267,52 @@ export default {
                 alert(res.data)
             } catch (err) {
                 console.log(err)
+            }
+        },
+        async handleImageChange(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            try {
+                const imgRef = ref(imgDb, `/comment/product-${this.productId}/${file.name}`);
+                const uploadTask = uploadBytesResumable(imgRef, file);
+                uploadTask.on(
+                    "state_changed",
+                    (snapshot) => {
+                        this.percent = Math.round((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    },
+                    (err) => console.log(err),
+                    async () => {
+                        const url = await getDownloadURL(uploadTask.snapshot.ref);
+                        this.commentImage = url;
+                    }
+                );
+            } catch (err) {
+                console.error("Error uploading image:", err);
+            }
+        },
+        async Comment(){
+            try {
+                await axios.post(`/Comment/create/${this.productId}`,{
+                    commentText:this.commentText,
+                    imageUrl:this.commentImage,
+                    rate:this.commentRate
+                })
+                this.getComment()
+                alert("Tải bình luận thành công")
+            } catch (err) {
+                if(err.response && err.response.status===401){
+                    alert("Bạn cần đăng nhập để bình luận")
+                }else{
+                    console.log(err)
+                }
+            }
+        },
+        async getComment(){
+            try {
+                const res=await axios.get(`/Comment/getByProduct/${this.productId}`)
+                this.listComments=res.data
+            } catch (err) {
+                    console.log(err)
             }
         }
     }
